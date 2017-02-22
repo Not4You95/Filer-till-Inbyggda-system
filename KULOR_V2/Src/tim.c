@@ -41,7 +41,7 @@
 
 /* USER CODE END 0 */
 
-TIM_HandleTypeDef htim1;
+
 
 /* TIM1 init function */
 void MX_TIM1_Init(void)
@@ -133,7 +133,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
     HAL_GPIO_Init(Rxdata_GPIO_Port, &GPIO_InitStruct);
 
     /* Peripheral interrupt init */
-    HAL_NVIC_SetPriority(TIM1_CC_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(TIM1_CC_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TIM1_CC_IRQn);
   /* USER CODE BEGIN TIM1_MspInit 1 */
 
@@ -143,6 +143,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
 
 void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 {
+ 
 
   if(tim_baseHandle->Instance==TIM1)
   {
@@ -162,7 +163,7 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 
   }
   /* USER CODE BEGIN TIM1_MspDeInit 1 */
-
+  
   /* USER CODE END TIM1_MspDeInit 1 */
 } 
 

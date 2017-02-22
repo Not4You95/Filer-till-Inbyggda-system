@@ -44,6 +44,7 @@
 //////////BUFFER USED FOR DIPLAYING TIME AND DATE//////////////
 uint8_t aShowTime[50]={0};
 uint8_t aShowDate[50]={0};
+
 //////////////////////////////////////
 /* USER CODE END Includes */
 
@@ -90,7 +91,7 @@ int main(void)
   MX_CRC_Init();
   MX_RTC_Init();
   MX_TIM1_Init();
- // MX_USART3_UART_Init();
+  MX_USART3_UART_Init();
 
   /* USER CODE BEGIN 2 */
  // RTC_CLOCK_SETINGS();
@@ -158,15 +159,7 @@ int main(void)
   {
     //CalculateTempraturePacket(data_array);
     //SetDisplayClock(i);
-    HAL_Delay(50);
-    
-    HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);
+   
    // SetDisplayTemp(i);
     //ShowNumberOnDispaly(i);
    // RTC_CalendarShow(aShowTime, aShowDate);
@@ -174,18 +167,10 @@ int main(void)
      
     
   /* USER CODE BEGIN 3 */
-   /* HAL_GPIO_WritePin(GPIOE, LD4_Pin,GPIO_PIN_SET);
-    HAL_Delay(2);
-    HAL_GPIO_WritePin(GPIOE, LD4_Pin,GPIO_PIN_RESET);
-    HAL_Delay(2);
-    HAL_GPIO_WritePin(GPIOE, LD4_Pin,GPIO_PIN_SET);
-    HAL_Delay(4);
-    HAL_GPIO_WritePin(GPIOE, LD4_Pin,GPIO_PIN_RESET);
-    HAL_Delay(4);*/
-
-  }
+ 
   /* USER CODE END 3 */
 
+}
 }
 
 /** System Clock Configuration

@@ -9,9 +9,12 @@
 #include "stm32f3_discovery.h"
 #include "Kulor_Funktioner.h"
 #include "crc.h"
+#include  "main.h"
 
-
+RTC_HandleTypeDef RtcHandle;
 ITStatus UartReady = RESET;
+TIM_HandleTypeDef htim1;
+
 //typedef enum { minits,houer,day,year,mouth} sates_clk;
 //sates_clk State, NextState;
   char *SetDate[3];
@@ -26,9 +29,10 @@ ITStatus UartReady = RESET;
   uint32_t               RecivedPacket[32];
   uint8_t                BitCount = 0;
   uint32_t              uwIC2Value1=0;
-  uint32_t              data_array[40];
+ 
   uint8_t               CrcCode=10;
-  RTC_HandleTypeDef RtcHandle;
+  bool                  PreambleFlag=false;
+  
 //////////////////////////////////////////////////
  
 
@@ -415,52 +419,89 @@ void set_clock_serial(void){
 /////////////TIM1 INTERUPTS FÖR PULS BRED///////////////////////////////////////
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
   
+// HAL_TIM_IC_Stop_IT(&htim1,TIM_CHANNEL_2);
   if(htim -> Channel == HAL_TIM_ACTIVE_CHANNEL_2){   
       
       uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
       //CalculateTempraturePacket(uwIC2Value1);
+      
        printf("IC INPUT: %d\n",uwIC2Value1);
-       RecivedPacket[BitCount] = uwIC2Value1;
-       printf("Array: %d\n\n",RecivedPacket[BitCount]);
-       BitCount++;
        
+      // printf("Array: %d\nBitCount: %d\n\n\n",RecivedPacket[BitCount],BitCount);
+       printf("BitCount: %d\nPreamble: %d\n",BitCount,PreambleCount);
+       if(9000<uwIC2Value1<9400 && BitCount<8){
+         PreambleCount++;
+       }
+       if(BitCount==8 && PreambleCount==8){
+         PreambleFlag=true;
+       }
+       
+       if(PreambleFlag){
+         RecivedPacket[BitCount-9] = uwIC2Value1;
+         printf("Array: %d\nBitCount: %d\n\n\n",RecivedPacket[BitCount-9],BitCount);
+
+        
+       }
+       if(BitCount == 39){
+         CalculateTempraturePacket(RecivedPacket);
+         BitCount=0;
+         PreambleCount=0;
+         PreambleFlag=false;
+       }
+       BitCount++;
      
     }
+    if(PreambleCount<8 && BitCount>8){
+             BitCount=0;
+           PreambleCount=0;
+           PreambleFlag=false;
+    }
  
-     
+     HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_2);
     }
 
 int CalculatePulsWithd(uint32_t puls){
   
   
-      if(590<puls<620){
-          return 1;
-        
-      }
-      else if(1490<puls<1520){
+      
+      if(14900< puls && puls <15200)
+      {
          return 0;
+      }
+      else if(6000<puls && puls <6100){
+        return 1;
       }
       return 0;
       
 }
 
 void CalculateTempraturePacket(uint32_t PulsInput[]){
-  
-  printf("Temprature: ");
-  for(int i=14;i<24;i++){
-    Temprature[i-14]=PulsInput[i];
-    printf("%d",Temprature[i-14]);
+  uint32_t temp[40];
+  for(int i=0;i<40;i++){
+   temp[i]=CalculatePulsWithd(PulsInput[i]);
+    printf("%d\n", PulsInput[i]);
     
   }
-  printf("\nLuft: ");
-  for(int i=26;i<33;i++){
-    humidity[i-26]=PulsInput[i];
-    printf("%d",humidity[i-26]);
+  printf("Temprature: \n");
+  for(int i=13;i<22;i++){
+    Temprature[i-13]= temp[i];
+    printf("%d\n",Temprature[i-13]);
+    
   }
   
-  CrcCode = HAL_CRC_Calculate(&hcrc, data_array, sizeof(data_array));
+  printf("\nLuft: ");
+  for(int a=23;a<30;a++){
+    humidity[a-24]= temp[a];
+    printf("%d",humidity[a-24]);
+  }
+  printf("\nCRC: ");
+  for(int a=31;a<38;a++){   
+    printf("%d",temp[a]);
+  }
   
-  printf("\nCRC: %d\n",HAL_CRC_Calculate(&hcrc, data_array, sizeof(data_array)));
+  CrcCode = HAL_CRC_Calculate(&hcrc, temp, 40);
+  
+  printf("\nCRC: %d\n",CrcCode);
 
    
 }

@@ -13,10 +13,10 @@ CStepIntDis=_ 0
 LeaveTargetRunning=_ 0
 stlinkResetStyle=0
 stlinkResetStrategy=1
-stlinkserialNo=30303031
+stlinkserialNo=67062515
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=1526431847
+Checksum=-1018743869
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -94,7 +94,8 @@ SumSortOrder=0
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Count=0
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Kulor_Funktioner.c}.507.1" 0 0 1 "" 0 "" 0
+Count=1
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
