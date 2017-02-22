@@ -7,10 +7,15 @@ void RTC_CLOCK_SETINGS(void);
 void RTC_CalendarShow(uint8_t *showtime, uint8_t *showdate);
 //void RTC_test(void);
 void RTC_CalendarConfig(void);
-void SetLed(void);
+void SetDisplayClock(uint8_t number[]);
+void SetDisplayTemp(uint8_t number[]);
+void SetDisplayNumber();
+
+
 void test(void);
-void CalculateTempraturePacket(uint32_t PulsInput);
+void CalculateTempraturePacket(uint32_t PulsInput[]);
 int CalculatePulsWithd(uint32_t);
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim);
 //void RTC_CalendarConfig_test(void);
 /////////////////////////////////////////////
 #define RTC_ASYNCH_PREDIV  0x7F   /* LSE as RTC clock */

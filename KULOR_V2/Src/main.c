@@ -63,31 +63,6 @@ void Error_Handler(void);
 
 /* USER CODE END PFP */
 ////////////////////////Simulerings pulser////////////////////////////////////////////////////////////
-void Send_one(void)
-
-{
-    uint16_t i;
-  
-    BSP_LED_On(LED4);
-    for ( i = 0; i < 6260; ++i );
-
-    BSP_LED_Off(LED4);
-    for ( i = 0; i < 9260; ++i );
-
-}
-
-void Send_zero(void)
-
-{
-    uint16_t i;
-  
-    BSP_LED_On(LED4);
-    for ( i = 0; i < 15500; ++i );
-
-    BSP_LED_Off(LED4);
-    for ( i = 0; i < 9260; ++i );
-
-}
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -113,94 +88,88 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_CRC_Init();
-  MX_RTC_Init();
+ // MX_RTC_Init();
   MX_TIM1_Init();
-  MX_USART3_UART_Init();
+ // MX_USART3_UART_Init();
 
   /* USER CODE BEGIN 2 */
-  RTC_CLOCK_SETINGS();
+ // RTC_CLOCK_SETINGS();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
- // set_clock_serial();
- // test();
+  /////////////////////////////////////////////////
+  uint32_t              data_array[40];
+  data_array[0] = 0;
+  data_array[1] = 1;
+  data_array[2] = 0;
+  data_array[3] = 0;
+  data_array[4] = 1;
+  data_array[5] = 0;
+  data_array[6] = 0;
+  data_array[7] = 0;
+    
+  data_array[8] = 0;
+  data_array[9] = 1;
+  data_array[10] = 1;
+  data_array[11] = 1;
+  data_array[12] = 0;
+  data_array[13] = 0;
+  data_array[14] = 0;
+  data_array[15] = 0;
+    
+  data_array[16] = 1;
+  data_array[17] = 1;
+  data_array[18] = 0;
+  data_array[19] = 1;
+  data_array[20] = 0;
+  data_array[21] = 1;
+  data_array[22] = 1;
+  data_array[23] = 1;
+    
+  data_array[24] = 0;
+  data_array[25] = 0;
+  data_array[26] = 1;
+  data_array[27] = 0;
+  data_array[28] = 0;
+  data_array[29] = 0;
+  data_array[30] = 1;
+  data_array[31] = 0;
+    
+  data_array[32] = 0;
+  data_array[33] = 1;
+  data_array[34] = 0;
+  data_array[35] = 1;
+  data_array[36] = 1;
+  data_array[37] = 1;
+  data_array[38] = 0;
+  data_array[39] = 1;
+  uint8_t i[4];
+  i[0]=1;
+  i[1]=0;
+  i[2]=0;
+  i[3]=1;
+  ///////////////////////////////////////////////////
+ 
   while (1)
   {
-  /* USER CODE END WHILE */
-  //RTC_CalendarShow(aShowTime, aShowDate);
-  //BSP_LED_On(LED3);   
-   /* BSP_LED_On(LED3);
+    //CalculateTempraturePacket(data_array);
+    SetDisplayClock(i);
     HAL_Delay(5);
-    BSP_LED_Off(LED3);
-    HAL_Delay(5);*/
-
-  /*  Send_one();  // Preamble 9 ones
-    Send_one();
-    Send_one();
-    Send_one();
-    Send_one();
-    Send_one();
-    Send_one();
-    Send_one();
-    Send_one();
+    SetDisplayTemp(i);
+    ShowNumberOnDispaly(i);
+   // printf("%d\n",i);
+     
     
-    Send_zero();  // Net id? 01001
-    Send_one();
-    Send_zero();
-    Send_zero();
-    Send_one();
-
-    Send_zero();  // Channel number 000
-    Send_zero();
-    Send_zero();   
-
-    Send_zero();  // Unknown 011100
-    Send_one();
-    Send_one();
-    Send_one();
-    Send_zero();
-    Send_zero();
-    
-    Send_zero();  // Temperature 00 1101 0111 21,5 C
-    Send_zero();   
-
-    Send_one();
-    Send_one();
-    Send_zero();
-    Send_one();
-
-    Send_zero();
-    Send_one();
-    Send_one();
-    Send_one();
-
-    Send_zero();  // Unknown 0
-    
-    Send_zero();  // Humidity 010 0010 34%
-    Send_one();
-    Send_zero();
-
-    Send_zero();
-    Send_zero();
-    Send_one();
-    Send_zero();
-
-    Send_zero();   // CRC-8 0101 1101
-    Send_one();
-    Send_zero();
-    Send_one();
-
-    Send_one();
-    Send_one();
-    Send_zero();
-    Send_one();
-   
-   
-    BSP_LED_Off(LED3);
-          
-    HAL_Delay(2000);*/
   /* USER CODE BEGIN 3 */
+   /* HAL_GPIO_WritePin(GPIOE, LD4_Pin,GPIO_PIN_SET);
+    HAL_Delay(2);
+    HAL_GPIO_WritePin(GPIOE, LD4_Pin,GPIO_PIN_RESET);
+    HAL_Delay(2);
+    HAL_GPIO_WritePin(GPIOE, LD4_Pin,GPIO_PIN_SET);
+    HAL_Delay(4);
+    HAL_GPIO_WritePin(GPIOE, LD4_Pin,GPIO_PIN_RESET);
+    HAL_Delay(4);*/
 
   }
   /* USER CODE END 3 */
