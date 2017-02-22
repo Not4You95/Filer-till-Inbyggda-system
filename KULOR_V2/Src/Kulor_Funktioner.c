@@ -245,6 +245,8 @@ void RTC_CLOCK_SETINGS()
   }
   
 }
+
+
  void SetDisplayNumber(){
     
   }
@@ -289,9 +291,18 @@ void SetDisplayClock(uint8_t number[])
 
 void ShowNumberOnDispaly(uint8_t number[]){
   RTC_TimeTypeDef stimestructureget;
+  HAL_RTC_GetTime(&RtcHandle, &stimestructureget, RTC_FORMAT_BIN);
   uint8_t houer = stimestructureget.Hours;
   uint8_t minits = stimestructureget.Minutes;
   printf("Time: %d:%d\n",houer,minits);
+  
+     HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+     HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+     HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_RESET);
+     HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_RESET);
+     HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_RESET);
+     HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);
+         
   
 }
 

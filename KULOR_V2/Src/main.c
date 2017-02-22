@@ -88,7 +88,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_CRC_Init();
- // MX_RTC_Init();
+  MX_RTC_Init();
   MX_TIM1_Init();
  // MX_USART3_UART_Init();
 
@@ -148,16 +148,28 @@ int main(void)
   i[0]=1;
   i[1]=0;
   i[2]=0;
-  i[3]=1;
+  i[3]=0;
+      HAL_GPIO_WritePin(GPIOC, DIG2term_Pin, GPIO_PIN_SET);
+
+   //ShowNumberOnDispaly(i);
   ///////////////////////////////////////////////////
  
   while (1)
   {
     //CalculateTempraturePacket(data_array);
-    SetDisplayClock(i);
-    HAL_Delay(5);
-    SetDisplayTemp(i);
-    ShowNumberOnDispaly(i);
+    //SetDisplayClock(i);
+    HAL_Delay(50);
+    
+    HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);
+   // SetDisplayTemp(i);
+    //ShowNumberOnDispaly(i);
+   // RTC_CalendarShow(aShowTime, aShowDate);
    // printf("%d\n",i);
      
     
