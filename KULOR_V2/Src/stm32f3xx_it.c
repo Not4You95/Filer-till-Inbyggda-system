@@ -102,29 +102,19 @@ void USART3_IRQHandler(void){
 //////////////////////////////////////////////////////////////////
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
   
-  if(htim -> Channel == HAL_TIM_ACTIVE_CHANNEL_2){
-    
-    if(uhCaptureIndex == 0){      
-      uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-      uhCaptureIndex = 1;      
-    }
-    else if(uhCaptureIndex ==1){
-      uwIC2Value2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+  if(htim -> Channel == HAL_TIM_ACTIVE_CHANNEL_2){   
       
-      if(uwIC2Value2 > uwIC2Value1){
-        uwDiffCapture = (uwIC2Value2 - uwIC2Value1);
+      uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+        
+      if(600<uwIC2Value1<620){
+        
       }
-      else if(uwIC2Value2 < uwIC2Value1)
-      {
-        uwDiffCapture = ((0xFFFFFFFF- uwIC2Value1)+uwIC2Value2)+1;
-      }
-      else {
-        Error_Handler();
-      }
-      printf("CaptureHandler: %s",uwDiffCapture);
     }
-  }
+ 
+      printf("CaptureHandler: %d\n",uwIC2Value1);
+    }
   
-}
+  
+
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

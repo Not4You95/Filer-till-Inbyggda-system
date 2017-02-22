@@ -16,7 +16,7 @@ stlinkResetStrategy=1
 stlinkserialNo=67062515
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=540324618
+Checksum=457364026
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -49,19 +49,6 @@ Fmt1={W}42:hour	4	0
 Fmt2={W}42:minits	4	0
 Fmt3={W}42:mouth	4	0
 Fmt4={W}42:year	4	0
-[DriverProfiling]
-Enabled=0
-Mode=3
-Graph=0
-Symbiont=0
-Exclusions=
-[CallStackLog]
-Enabled=0
-[CallStackStripe]
-ShowTiming=1
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [Trace2]
 Enabled=0
 ShowSource=0
@@ -105,8 +92,7 @@ SumSortOrder=0
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.84.5" 0 0 1 "" 0 "" 0
-Count=1
+Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -114,3 +100,16 @@ Category=_ 0
 [Aliases]
 Count=0
 SuppressDialog=0
+[DriverProfiling]
+Enabled=0
+Mode=3
+Graph=0
+Symbiont=0
+Exclusions=
+[CallStackLog]
+Enabled=0
+[CallStackStripe]
+ShowTiming=1
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""

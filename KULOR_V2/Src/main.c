@@ -128,11 +128,14 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-  RTC_CalendarShow(aShowTime, aShowDate);
-  BSP_LED_On(LED3);   
-    
+  //RTC_CalendarShow(aShowTime, aShowDate);
+  //BSP_LED_On(LED3);   
+   /* BSP_LED_On(LED3);
+    HAL_Delay(5);
+    BSP_LED_Off(LED3);
+    HAL_Delay(5);*/
 
-    Send_one();  // Preamble 9 ones
+  /*  Send_one();  // Preamble 9 ones
     Send_one();
     Send_one();
     Send_one();
@@ -196,7 +199,7 @@ int main(void)
    
     BSP_LED_Off(LED3);
           
-    HAL_Delay(2000);
+    HAL_Delay(2000);*/
   /* USER CODE BEGIN 3 */
 
   }
