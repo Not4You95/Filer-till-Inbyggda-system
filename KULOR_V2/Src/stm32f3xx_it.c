@@ -35,17 +35,11 @@
 #include "stm32f3xx.h"
 #include "stm32f3xx_it.h"
 #include "usart.h"
+#include "Kulor_Funktioner.h"
 
 /* USER CODE BEGIN 0 */
 uint32_t               uwIC2Value1 = 0;
-uint32_t               uwIC2Value2 = 0;
-uint32_t               uwDiffCapture = 0;
 
-/* Capture index */
-uint16_t               uhCaptureIndex = 0;
-
-/* Frequency Value */
-uint32_t               uwFrequency = 0;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -106,12 +100,11 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
       
       uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
         
-      if(600<uwIC2Value1<620){
-        
-      }
+     // CalculateTempraturePacket(uwIC2Value1);
+      printf("IC INPUT: %d\n",uwIC2Value1);
     }
  
-      printf("CaptureHandler: %d\n",uwIC2Value1);
+     
     }
   
   

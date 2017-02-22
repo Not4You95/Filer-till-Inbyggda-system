@@ -18,6 +18,10 @@ ITStatus UartReady = RESET;
   char NewLine[]="\n\r";
   char tempInputDate[10];
   char tempInputTime[6];
+  uint32_t               RecivedPacket[32];
+  uint8_t                BitCount = 0;
+  uint8_t                PreambleCount=0;
+  uint8_t                CrcCode[8];
 
   RTC_HandleTypeDef RtcHandle;
 //////////////////////////////////////////////////
@@ -332,41 +336,39 @@ void set_clock_serial(void){
 
   
 }
-////////////////////////////////////////////////////
-void test(void)
-{
-  RTC_DateTypeDef sdatestructure;
-  RTC_TimeTypeDef stimestructure;
-
-  /*##-1- Configure the Date #################################################*/
-  /* Set Date: Tuesday February 18th 2014 */
-  sdatestructure.Year = 0x17;
-  sdatestructure.Month = RTC_MONTH_FEBRUARY;
-  sdatestructure.Date = 0x20;
-  //sdatestructure.WeekDay = RTC_WEEKDAY_TUESDAY;
+/////////////TIM1 INTERUPTS FÖR PULS BRED///////////////////////////////////////
+int CalculatePulsWithd(uint32_t puls){
   
-  if(HAL_RTC_SetDate(&RtcHandle,&sdatestructure,RTC_FORMAT_BCD) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
+  
+      if(590<puls<620){
+          return 1;
+        
+      }
+      else if(1490<puls<1520){
+         return 0;
+      }
+      
+}
 
-  /*##-2- Configure the Time #################################################*/
-  /* Set Time: 02:00:00 */
-  stimestructure.Hours = 0x19;
-  stimestructure.Minutes = 0x2B;
-  stimestructure.Seconds = 0x00;
-  stimestructure.TimeFormat = RTC_HOURFORMAT12_AM;
-  stimestructure.DayLightSaving = RTC_DAYLIGHTSAVING_NONE ;
-  stimestructure.StoreOperation = RTC_STOREOPERATION_RESET;
+void CalculateTempraturePacket(uint32_t PulsInput){
 
-  if (HAL_RTC_SetTime(&RtcHandle, &stimestructure, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
-
-  /*##-3- Writes a data in a RTC Backup data Register1 #######################*/
-  HAL_RTCEx_BKUPWrite(&RtcHandle, RTC_BKP_DR1, 0x32F2);
+    int PulsValue=0;
+    PulsValue = CalculatePulsWithd(PulsInput); // Call the funktion to get info about the  input is 1 or 0
+    
+    if(PulsValue == 1 && BitCount <9 && PreambleCount<9){ // Calculate the Preamble
+          PreambleCount++;  // couting up
+    }
+    
+    if(PreambleCount == 9 && BitCount >7 ){ // Data saves in RecivedPacket
+        RecivedPacket[BitCount] = PulsValue ;   
+    }   
+    printf("\nInput: %d\nPreambleCount: %d\nPulseValue: %d\nBitCount: %d\nData: %d\n",PulsInput,PreambleCount,PulsValue,BitCount,RecivedPacket[BitCount]);
+    BitCount++;// Counting up for eatch bit
+    
+    if(BitCount == 40){
+      
+    }
+    
+   
 }
 

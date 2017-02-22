@@ -16,7 +16,7 @@ stlinkResetStrategy=1
 stlinkserialNo=67062515
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=457364026
+Checksum=-2088549954
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -44,11 +44,13 @@ ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
 [watch_formats]
-Fmt0={W}42:date	4	0
-Fmt1={W}42:hour	4	0
-Fmt2={W}42:minits	4	0
-Fmt3={W}42:mouth	4	0
-Fmt4={W}42:year	4	0
+Fmt0={W}42:BitCount	3	0
+Fmt1={W}42:PreambleCount	3	0
+Fmt2={W}42:date	4	0
+Fmt3={W}42:hour	4	0
+Fmt4={W}42:minits	4	0
+Fmt5={W}42:mouth	4	0
+Fmt6={W}42:year	4	0
 [Trace2]
 Enabled=0
 ShowSource=0
@@ -89,17 +91,13 @@ ShowTimeLog=1
 SumEnabled=0
 ShowTimeSum=1
 SumSortOrder=0
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[Aliases]
-Count=0
-SuppressDialog=0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
 [DriverProfiling]
 Enabled=0
 Mode=3
@@ -110,6 +108,10 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Count=0
+[Aliases]
+Count=0
+SuppressDialog=0

@@ -9,6 +9,8 @@ void RTC_CalendarShow(uint8_t *showtime, uint8_t *showdate);
 void RTC_CalendarConfig(void);
 void SetLed(void);
 void test(void);
+void CalculateTempraturePacket(uint32_t PulsInput);
+int CalculatePulsWithd(uint32_t);
 //void RTC_CalendarConfig_test(void);
 /////////////////////////////////////////////
 #define RTC_ASYNCH_PREDIV  0x7F   /* LSE as RTC clock */
