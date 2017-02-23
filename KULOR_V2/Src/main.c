@@ -100,51 +100,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   /////////////////////////////////////////////////
-  uint32_t              data_array[40];
-  data_array[0] = 0;
-  data_array[1] = 1;
-  data_array[2] = 0;
-  data_array[3] = 0;
-  data_array[4] = 1;
-  data_array[5] = 0;
-  data_array[6] = 0;
-  data_array[7] = 0;
-    
-  data_array[8] = 0;
-  data_array[9] = 1;
-  data_array[10] = 1;
-  data_array[11] = 1;
-  data_array[12] = 0;
-  data_array[13] = 0;
-  data_array[14] = 0;
-  data_array[15] = 0;
-    
-  data_array[16] = 1;
-  data_array[17] = 1;
-  data_array[18] = 0;
-  data_array[19] = 1;
-  data_array[20] = 0;
-  data_array[21] = 1;
-  data_array[22] = 1;
-  data_array[23] = 1;
-    
-  data_array[24] = 0;
-  data_array[25] = 0;
-  data_array[26] = 1;
-  data_array[27] = 0;
-  data_array[28] = 0;
-  data_array[29] = 0;
-  data_array[30] = 1;
-  data_array[31] = 0;
-    
-  data_array[32] = 0;
-  data_array[33] = 1;
-  data_array[34] = 0;
-  data_array[35] = 1;
-  data_array[36] = 1;
-  data_array[37] = 1;
-  data_array[38] = 0;
-  data_array[39] = 1;
+ 
   uint8_t i[4];
   i[0]=1;
   i[1]=0;
@@ -157,6 +113,10 @@ int main(void)
  
   while (1)
   {
+  /*  int i = HAL_CRC_Calculate(&hcrc, data_array, 40);
+    printf("CRC: %d \n",i);
+    CalculateTempraturePacket(data_array);
+    HAL_Delay(5000);*/
     //CalculateTempraturePacket(data_array);
     //SetDisplayClock(i);
    

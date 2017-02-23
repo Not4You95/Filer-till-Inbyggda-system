@@ -32,9 +32,11 @@ TIM_HandleTypeDef htim1;
  
   uint8_t               CrcCode=10;
   bool                  PreambleFlag=false;
+  uint32_t               PulsOneLength=0;
   
 //////////////////////////////////////////////////
- 
+  uint32_t              data_array[40];
+
 
 ///////////////////////////////////////////////////
 
@@ -49,10 +51,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle){
   
 }
 ////Send text to uset throw uart/////
-void SendToSerial(uint8_t *text, uint8_t size)
-{  
- /* printf("\n hej: %d\n", sizeof(text));
-  printf("out: %s ",text);*/
+void SendToSerial(uint8_t *text, uint8_t size){  
+ 
    
  
   
@@ -87,8 +87,7 @@ void ReciveFromUser_clk(char *temp,uint8_t size){
 }
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void assert_failed(uint8_t *file, uint32_t line)
-{
+void assert_failed(uint8_t *file, uint32_t line){
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
@@ -421,37 +420,39 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
   
 // HAL_TIM_IC_Stop_IT(&htim1,TIM_CHANNEL_2);
   if(htim -> Channel == HAL_TIM_ACTIVE_CHANNEL_2){   
-      
+     BitCount++;
+
       uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
       //CalculateTempraturePacket(uwIC2Value1);
       
-       printf("IC INPUT: %d\n",uwIC2Value1);
+       printf("\nIC INPUT: %d\n",uwIC2Value1);
        
       // printf("Array: %d\nBitCount: %d\n\n\n",RecivedPacket[BitCount],BitCount);
        printf("BitCount: %d\nPreamble: %d\n",BitCount,PreambleCount);
-       if(9000<uwIC2Value1<9400 && BitCount<8){
+       
+       if(9000<uwIC2Value1<9400 && BitCount<10){
          PreambleCount++;
+        // PulsOneLength+=uwIC2Value1+PulsOneLength;
        }
-       if(BitCount==8 && PreambleCount==8){
+       if(BitCount==10 && PreambleCount==9){
          PreambleFlag=true;
        }
        
        if(PreambleFlag){
-         RecivedPacket[BitCount-9] = uwIC2Value1;
-         printf("Array: %d\nBitCount: %d\n\n\n",RecivedPacket[BitCount-9],BitCount);
+         RecivedPacket[BitCount-10] = uwIC2Value1;
+         printf("Array: %d\nBitCount: %d\n\n\n",RecivedPacket[BitCount-10],(BitCount-10));
 
         
        }
-       if(BitCount == 39){
+       if(BitCount == 50){
          CalculateTempraturePacket(RecivedPacket);
          BitCount=0;
          PreambleCount=0;
          PreambleFlag=false;
        }
-       BitCount++;
      
     }
-    if(PreambleCount<8 && BitCount>8){
+    if(PreambleCount<9 && BitCount>9){
              BitCount=0;
            PreambleCount=0;
            PreambleFlag=false;
@@ -464,26 +465,72 @@ int CalculatePulsWithd(uint32_t puls){
   
   
       
-      if(14900< puls && puls <15200)
+      if(14900< puls && puls <15200 || puls==0)
       {
          return 0;
       }
-      else if(6000<puls && puls <6100){
+      else if(6000<puls && puls <6100 || puls==1){
         return 1;
       }
+      
       return 0;
       
 }
 
 void CalculateTempraturePacket(uint32_t PulsInput[]){
   uint32_t temp[40];
+    data_array[0] = 0;
+  data_array[1] = 1;
+  data_array[2] = 0;
+  data_array[3] = 0;
+  data_array[4] = 1;
+  data_array[5] = 0;
+  data_array[6] = 0;
+  data_array[7] = 0;
+    
+  data_array[8] = 0;
+  data_array[9] = 1;
+  data_array[10] = 1;
+  data_array[11] = 1;
+  data_array[12] = 0;
+  data_array[13] = 0;
+  data_array[14] = 0;
+  data_array[15] = 0;
+    
+  data_array[16] = 1;
+  data_array[17] = 1;
+  data_array[18] = 0;
+  data_array[19] = 1;
+  data_array[20] = 0;
+  data_array[21] = 1;
+  data_array[22] = 1;
+  data_array[23] = 1;
+    
+  data_array[24] = 0;
+  data_array[25] = 0;
+  data_array[26] = 1;
+  data_array[27] = 0;
+  data_array[28] = 0;
+  data_array[29] = 0;
+  data_array[30] = 1;
+  data_array[31] = 0;
+    
+  data_array[32] = 0;
+  data_array[33] = 1;
+  data_array[34] = 0;
+  data_array[35] = 1;
+  data_array[36] = 1;
+  data_array[37] = 1;
+  data_array[38] = 0;
+  data_array[39] = 1;
+  
   for(int i=0;i<40;i++){
    temp[i]=CalculatePulsWithd(PulsInput[i]);
     printf("%d\n", PulsInput[i]);
     
   }
   printf("Temprature: \n");
-  for(int i=13;i<22;i++){
+  for(int i=13;i<23;i++){
     Temprature[i-13]= temp[i];
     printf("%d\n",Temprature[i-13]);
     
@@ -494,9 +541,20 @@ void CalculateTempraturePacket(uint32_t PulsInput[]){
     humidity[a-24]= temp[a];
     printf("%d",humidity[a-24]);
   }
+  
   printf("\nCRC: ");
-  for(int a=31;a<38;a++){   
-    printf("%d",temp[a]);
+  for(int i=33;i<40;i++){   
+    printf("%d",temp[i]);
+  }
+  
+  for(int i=0;i<40;i++){
+    if(temp[i]==data_array[i])
+    {
+    }
+    else{
+      printf("\nBit fel nr: %d\n Temp: %d Data: %d\n\n",i,temp[i],data_array[i]);
+    }
+    
   }
   
   CrcCode = HAL_CRC_Calculate(&hcrc, temp, 40);
