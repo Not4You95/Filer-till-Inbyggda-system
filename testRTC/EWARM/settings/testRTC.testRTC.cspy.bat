@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\common\bin\cspybat" -f "C:\Users\jonas\Documents\GitHub\Inbyggda-\lab 1\filer\testRTC\EWARM\settings\testRTC.testRTC.general.xcl" --backend -f "C:\Users\jonas\Documents\GitHub\Inbyggda-\lab 1\filer\testRTC\EWARM\settings\testRTC.testRTC.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\common\bin\cspybat" -f "C:\Users\jonas\OneDrive\KTH\åk3\Inbygda system\lab 1\filer\testRTC\EWARM\settings\testRTC.testRTC.general.xcl" --backend -f "C:\Users\jonas\OneDrive\KTH\åk3\Inbygda system\lab 1\filer\testRTC\EWARM\settings\testRTC.testRTC.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\common\bin\cspybat" -f "C:\Users\jonas\Documents\GitHub\Inbyggda-\lab 1\filer\testRTC\EWARM\settings\testRTC.testRTC.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\jonas\Documents\GitHub\Inbyggda-\lab 1\filer\testRTC\EWARM\settings\testRTC.testRTC.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\common\bin\cspybat" -f "C:\Users\jonas\OneDrive\KTH\åk3\Inbygda system\lab 1\filer\testRTC\EWARM\settings\testRTC.testRTC.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\jonas\OneDrive\KTH\åk3\Inbygda system\lab 1\filer\testRTC\EWARM\settings\testRTC.testRTC.driver.xcl" 
 
 @echo off 
 :end
