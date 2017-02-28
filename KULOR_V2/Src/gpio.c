@@ -137,7 +137,7 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = Neo_Pin|A_led_Pin|B_led_Pin|C_led_Pin 
                           |D_led_Pin|E_led_Pin|F_led_Pin|G_led_Pin 
                           |DP_led_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);

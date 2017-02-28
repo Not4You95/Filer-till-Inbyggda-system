@@ -110,11 +110,7 @@ int main(void)
   
   
   //////////////////////////////////////////////////////
-  HAL_GPIO_WritePin(GPIOC, DIG2clk_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOC, Kolon_Pin, GPIO_PIN_SET);
-  
-  HAL_GPIO_WritePin(GPIOD, A_led_Pin|B_led_Pin|C_led_Pin |D_led_Pin|E_led_Pin|F_led_Pin|G_led_Pin,GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_RESET);
+
   
   //////////////////////////////////////////////////////
   
@@ -124,7 +120,16 @@ int main(void)
   static uint32_t last_second = 0;
   while (1)
   {
-     CalculateTempraturePacket();
+   // SetDisplayTemp(1);
+    for(int i=0;i<10;i++){
+      ShowNumberOnDispaly(i);
+        HAL_Delay(500);
+      
+    }
+    
+ 
+   
+    // CalculateTempraturePacket();
    // ShowNumberOnDispaly();
    // SetDisplayTemp(i);
     /*  uint32_t current_second = HAL_GetTick();

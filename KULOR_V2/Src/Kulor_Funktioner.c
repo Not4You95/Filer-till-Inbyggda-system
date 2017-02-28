@@ -31,7 +31,7 @@ uint8_t               humidity[7];
 uint32_t               RecivedPacket[40];
 uint16_t                BitCount = 0;
 uint32_t              uwIC2Value1=0;
-uint8_t                shortPeriod=6000,LongPeriod=15000,space=200;
+uint8_t                shortPeriod=600,LongPeriod=1500,space=20;
 uint8_t                TempratureValue[5];
 uint16_t               BitValue[]= {512,256,128,64,32,16,8,4,2,1};
 uint8_t                HumidityValue[5];
@@ -309,25 +309,119 @@ void SetDisplayClock(uint8_t number[])
   
 }
 
-void ShowNumberOnDispaly(uint8_t number[]){
-  RTC_TimeTypeDef stimestructureget;
+void ShowNumberOnDispaly(uint8_t number){
+ /* RTC_TimeTypeDef stimestructureget;
   HAL_RTC_GetTime(&RtcHandle, &stimestructureget, RTC_FORMAT_BIN);
   uint8_t houer = stimestructureget.Hours;
   uint8_t minits = stimestructureget.Minutes;
-  printf("Time: %d:%d\n",houer,minits);
+  printf("Time: %d:%d\n",houer,minits);*/
   
+  HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_SET);
   
-  
-  /*HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_Set);
-  HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);*/
-  
-  HAL_GPIO_WritePin(GPIOD, A_led_Pin|B_led_Pin|C_led_Pin 
-                    |D_led_Pin|E_led_Pin|F_led_Pin|G_led_Pin 
-                      |DP_led_Pin, GPIO_PIN_SET);
+  switch(number){
+    
+  case 0: HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET); 
+          break;
+          
+  case 1:HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+  case 2:
+          HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+  case 3:
+          HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+  case 4:
+          HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+  case 5:
+          HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+  case 6:
+          HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+  case 7:
+          HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+  case 8: 
+    HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+  case 9:
+    HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
+          HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+          break;
+    
+   default: break;
+  }
   
   
 }
@@ -373,7 +467,7 @@ void getHumidity(){
   value1 = temp/10;
   HumidityValue[0] = value1;
   HumidityValue[1] = value2;
-  printf("Luft: %d\n", HumidityValue);
+  //printf("Luft: %d\n", HumidityValue);
   
   
 }
@@ -382,7 +476,7 @@ void getHumidity(){
 void SetDisplayTemp(uint8_t number[])
 {
   HAL_GPIO_WritePin(GPIOC, Kolon_Pin, GPIO_PIN_SET);
-  if(number[0]==1){
+  if(number[0]!=0){
     HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_SET);
     
     
@@ -390,7 +484,7 @@ void SetDisplayTemp(uint8_t number[])
   else{
     HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_RESET);
   }
-  if(number[1]==1){
+  if(number[1]!=0){
     
     HAL_GPIO_WritePin(GPIOC, DIG2term_Pin, GPIO_PIN_SET);
     
@@ -398,7 +492,7 @@ void SetDisplayTemp(uint8_t number[])
   else{
     HAL_GPIO_WritePin(GPIOC, DIG2term_Pin, GPIO_PIN_RESET);
   }
-  if(number[2]==1){
+  if(number[2]!=0){
     
     HAL_GPIO_WritePin(GPIOC, DIG3term_Pin, GPIO_PIN_SET);           
     
@@ -406,7 +500,7 @@ void SetDisplayTemp(uint8_t number[])
   else{
     HAL_GPIO_WritePin(GPIOC, DIG3term_Pin, GPIO_PIN_RESET);
   }
-  if(number[3]==1){
+  if(number[3]!=0){
     
     HAL_GPIO_WritePin(GPIOC, DIG4term_Pin, GPIO_PIN_SET);
     
@@ -494,9 +588,11 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
     uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
     
     
-    printf("\nIC INPUT: %d\n",uwIC2Value1);    
+    if(uwIC2Value1>580){
+       printf("\nIC INPUT: %d\n",uwIC2Value1);
+    }
     
-    if((5800)<uwIC2Value1 && uwIC2Value1 <6200 && BitCount<10 ){
+    if((580)<uwIC2Value1 && uwIC2Value1 <(620) && BitCount<10 ){
       PreambleCount++;      
       // printf("Preamble: %d\n",PreambleCount);
     }
@@ -608,7 +704,7 @@ void CalculateTempraturePacket(void){
   data_array[39] = 1;
   
   for(int i=0;i<40;i++){
-    temp[i]=CalculatePulsWithd(data_array[i]);
+    temp[i]=CalculatePulsWithd(RecivedPacket[i]);
     //printf("%d\n", RecivedPacket[i]);
     
   }
