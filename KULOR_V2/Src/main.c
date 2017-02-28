@@ -100,11 +100,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   /////////////////////////////////////////////////
   
-  uint8_t a[4];
-  a[0]=1;
-  a[1]=0;
-  a[2]=0;
-  a[3]=1;
+  
   
   
   //////////////////////////////////////////////////////
@@ -112,16 +108,13 @@ int main(void)
   
   //////////////////////////////////////////////////////
   
-  //ShowNumberOnDispaly(i);
-  set_clock_serial();
+  
+ //set_clock_serial();
   ///////////////////////////////////////////////////
   static uint32_t last_second = 0;
   
   while (1)
   {
-    
-      
-    
     /* USER CODE BEGIN 3 */
     
     for(int i=0;i<8;i++){ 
@@ -129,6 +122,7 @@ int main(void)
      HAL_Delay(1);
      
     }
+    //RTC_CalendarShow();
     /* USER CODE END 3 */
     
   }

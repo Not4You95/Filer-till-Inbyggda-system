@@ -88,7 +88,7 @@ void ReciveFromUser_clk(char *temp,uint8_t size){
   
   
   
-  printf("Input: %s %d\n",temp,sizeof(temp));
+  //printf("Input: %s %d\n",temp,sizeof(temp));
   
 }
 /////////////////////////////////////////////////////
@@ -108,59 +108,30 @@ void RTC_CalendarConfig(void)
   
   
   
-  /*##-1- Configure the Date #################################################*/
-  /* Set Date: Tuesday February 18th 2014 */
-  static uint8_t year;
-  static uint8_t date,minits,hour,mouth;
-  year = (atoi(SetDate[0])-1994);
   
-  mouth = atoi(SetDate[1]); 
+
   
-  if(atoi(SetDate[2])>15){
-    date = (atoi(SetDate[2])+11);
-  }
-  else{
-    date = atoi(SetDate[2]);
-  }
-  
-  if(atoi(SetTime[1])>15){
-    minits = (atoi(SetTime[1])+30);
-  }
-  else{
-    minits = atoi(SetTime[1]);
-  }
-  
-  if(atoi(SetTime[0])>15){
-    hour = (atoi(SetTime[0])+6);
-  }
-  else{
-    hour = atoi(SetTime[0]);    
-  }
-  //printf("\n\nHour: %d:%d  Date: %d-%d-%d\n",hour,minits,date,mouth,year);
-  
-  
-  sdatestructure.Year = year;//atoi(SetDate[0]);//0x14;
-  sdatestructure.Month = mouth;
-  sdatestructure.Date = date;//atoi(SetDate[2]);//0x18;
+  sdatestructure.Year = (atoi(SetDate[0])-2000);//atoi(SetDate[0]);//0x14;
+  sdatestructure.Month = atoi(SetDate[1]);
+  sdatestructure.Date = atoi(SetDate[2]);//atoi(SetDate[2]);//0x18;
   sdatestructure.WeekDay = RTC_WEEKDAY_TUESDAY;
   
   
-  if(HAL_RTC_SetDate(&RtcHandle,&sdatestructure,RTC_FORMAT_BCD) != HAL_OK)
+  if(HAL_RTC_SetDate(&RtcHandle,&sdatestructure,RTC_FORMAT_BIN) != HAL_OK)
   {
     // Initialization Error 
     Error_Handler();
   }
   
-  /*##-2- Configure the Time #################################################*/
-  /* Set Time: 02:00:00 */
-  stimestructure.Hours = hour;//atoi(SetTime[0]);//0x02;
-  stimestructure.Minutes = minits;//atoi(SetTime[1]);
+ 
+  stimestructure.Hours = atoi(SetTime[0]);//atoi(SetTime[0]);//0x02;
+  stimestructure.Minutes = atoi(SetTime[1]);//atoi(SetTime[1]);
   stimestructure.Seconds = 0x00;
   stimestructure.TimeFormat = RTC_HOURFORMAT_24;
   stimestructure.DayLightSaving = RTC_DAYLIGHTSAVING_NONE ;
   stimestructure.StoreOperation = RTC_STOREOPERATION_RESET;
   
-  if (HAL_RTC_SetTime(&RtcHandle, &stimestructure, RTC_FORMAT_BCD) != HAL_OK)
+  if (HAL_RTC_SetTime(&RtcHandle, &stimestructure, RTC_FORMAT_BIN) != HAL_OK)
   {
     // Initialization Error 
     Error_Handler();
@@ -169,7 +140,7 @@ void RTC_CalendarConfig(void)
   /*##-3- Writes a data in a RTC Backup data Register1 #######################*/
   HAL_RTCEx_BKUPWrite(&RtcHandle, RTC_BKP_DR1, 0x32F2);
   
-  if(sdatestructure.Date == date && sdatestructure.Year == year){
+  if(sdatestructure.Date == atoi(SetDate[2]) && sdatestructure.Year == atoi(SetDate[0])){
     uint8_t text_ok[] ="The clock is now set!!";
     SendToSerial(text_ok,sizeof(text_ok));  
   }
@@ -291,25 +262,25 @@ void ShowNumberOnDispaly(uint8_t number){
     break;
     
   case 10:  HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
-            HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
-            break;
-            
+  HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_RESET);          
+  HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+  break;
+  
   case 11:  HAL_GPIO_WritePin(GPIOD, A_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);          
-            HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
-            break;       
-    
+  HAL_GPIO_WritePin(GPIOD, B_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, C_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, D_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, E_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, F_led_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, G_led_Pin, GPIO_PIN_SET);          
+  HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_SET);
+  break;       
+  
   default: break;
   }
   
@@ -325,14 +296,15 @@ void UppDateDisplay(uint8_t number)
   /* Get the RTC current Time */
   HAL_RTC_GetTime(&RtcHandle, &stimestructureget, RTC_FORMAT_BIN);
   HAL_RTC_GetDate(&RtcHandle, &sdatestructureget, RTC_FORMAT_BIN);
- 
+  
+ // printf("Time: %2d:%2d:%2d\n", stimestructureget.Hours, stimestructureget.Minutes, stimestructureget.Seconds);
   
   uint8_t houre1=1,houre2=2,minits1=3,minits2=4;  
   //HAL_GPIO_WritePin(GPIOC, Kolon_Pin, GPIO_PIN_SET);
   
   uint32_t current_second = HAL_GetTick();
-  if (current_second - last_second > 500)
-    {    
+  if ((current_second - last_second)/2 > 500)
+  {    
     last_second = current_second;        
     HAL_GPIO_TogglePin(GPIOC,Kolon_Pin);
     
@@ -342,8 +314,8 @@ void UppDateDisplay(uint8_t number)
   if(number == 0){
     HAL_GPIO_WritePin(GPIOC, DIG1clk_Pin, GPIO_PIN_SET);
     
-    //printf("Test: %d",(stimestructureget.Minutes/10 ));
-    ShowNumberOnDispaly((stimestructureget.Minutes/10 ));
+    //printf("Test: %d\n",(stimestructureget.Hours/10 ));
+    ShowNumberOnDispaly((stimestructureget.Hours/10 ));
     
     
   }
@@ -365,7 +337,7 @@ void UppDateDisplay(uint8_t number)
   if(number == 2){
     
     HAL_GPIO_WritePin(GPIOC, DIG3clk_Pin, GPIO_PIN_SET); 
-    
+   // printf("Test: %d\n",(stimestructureget.Minutes/10));
     ShowNumberOnDispaly((stimestructureget.Minutes/10));
     
   }
@@ -384,13 +356,13 @@ void UppDateDisplay(uint8_t number)
   }
   
   if(number == 4){
-     HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_SET);
-     if(TempratureValue[5]==1){
-       ShowNumberOnDispaly(10);
-     }
-     else{
-       ShowNumberOnDispaly(11);
-     }
+    HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_SET);
+    if(TempratureValue[5]==1){
+      ShowNumberOnDispaly(10);
+    }
+    else{
+      ShowNumberOnDispaly(11);
+    }
     
   }
   else{
@@ -678,36 +650,38 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
   
   HAL_TIM_IC_Stop_IT(&htim1,TIM_CHANNEL_2);
   if(htim -> Channel == HAL_TIM_ACTIVE_CHANNEL_2){   
-   
-    
-    uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-    if(uwIC2Value1<2000)
-    {
-      BitCount++;
-      
-    if((400)<uwIC2Value1 && uwIC2Value1 <(800) && BitCount<4 ){
-      PreambleCount++;      
-      // printf("Preamble: %d\n",PreambleCount);
-    }
-    else if(BitCount>PreambleCount && PreambleCount != 3){
-      BitCount=0;
-      PreambleCount=0;     
-    }  
-    if(PreambleCount== 3){
-      RecivedPacket[BitCount-10] = uwIC2Value1;
-     // printf("Array: %d\n",RecivedPacket[BitCount-10]);
-      
-      
-      if(BitCount == 50){
-        CalculateTempraturePacket();
-        BitCount=0;
-        PreambleCount=0;
-      } 
-    }
-    }
-    
-    
-  } 
+  
+  
+  uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+  if(uwIC2Value1<2000 && uwIC2Value1>500)
+  {
+    //printf("hej\n");
+     BitCount++;
+  
+  if((400)<uwIC2Value1 && uwIC2Value1 <(800) && BitCount<4 ){
+  PreambleCount++;      
+  // printf("Preamble: %d\n",PreambleCount);
+}
+    else if(BitCount > PreambleCount && PreambleCount != 3){
+  BitCount=0;
+  PreambleCount=0;     
+} 
+  
+  if(PreambleCount== 3){
+  RecivedPacket[BitCount-10] = uwIC2Value1;
+  // printf("Array: %d\n",RecivedPacket[BitCount-10]);
+  
+  
+  if(BitCount == 50){
+  CalculateTempraturePacket();
+  BitCount=0;
+  PreambleCount=0;
+} 
+}
+}
+  
+  
+} 
   
   
   HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_2);
