@@ -42,8 +42,6 @@
 
 /* USER CODE BEGIN Includes */
 //////////BUFFER USED FOR DIPLAYING TIME AND DATE//////////////
-uint8_t aShowTime[50]={0};
-uint8_t aShowDate[50]={0};
 
 //////////////////////////////////////
 /* USER CODE END Includes */
@@ -102,11 +100,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   /////////////////////////////////////////////////
   
-  uint8_t i[4];
-  i[0]=0;
-  i[1]=0;
-  i[2]=0;
-  i[3]=1;
+  uint8_t a[4];
+  a[0]=1;
+  a[1]=0;
+  a[2]=0;
+  a[3]=1;
   
   
   //////////////////////////////////////////////////////
@@ -115,46 +113,22 @@ int main(void)
   //////////////////////////////////////////////////////
   
   //ShowNumberOnDispaly(i);
-  //set_clock_serial();
+  set_clock_serial();
   ///////////////////////////////////////////////////
   static uint32_t last_second = 0;
+  
   while (1)
   {
-   // SetDisplayTemp(1);
-    for(int i=0;i<10;i++){
-      ShowNumberOnDispaly(i);
-        HAL_Delay(500);
+    
       
-    }
-    
- 
-   
-    // CalculateTempraturePacket();
-   // ShowNumberOnDispaly();
-   // SetDisplayTemp(i);
-    /*  uint32_t current_second = HAL_GetTick();
-    
-    if (current_second - last_second > 1000)
-    {    
-    last_second = current_second;        
-    RTC_CalendarShow(aShowTime, aShowDate);
-    
-  }
-    /*  int i = HAL_CRC_Calculate(&hcrc, data_array, 40);
-    printf("CRC: %d \n",i);
-    CalculateTempraturePacket(data_array);
-    HAL_Delay(5000);*/
-    //CalculateTempraturePacket(data_array);
-    //SetDisplayClock(i);
-    //printf("--------------\n");
-    // SetDisplayTemp(i);
-    //ShowNumberOnDispaly(i);
-    // RTC_CalendarShow(aShowTime, aShowDate);
-    // printf("%d\n",i);
-    
     
     /* USER CODE BEGIN 3 */
     
+    for(int i=0;i<8;i++){ 
+     UppDateDisplay(i);
+     HAL_Delay(1);
+     
+    }
     /* USER CODE END 3 */
     
   }

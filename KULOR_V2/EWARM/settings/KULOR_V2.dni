@@ -16,7 +16,7 @@ stlinkResetStrategy=1
 stlinkserialNo=30303031
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=1119857399
+Checksum=-888731293
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -53,9 +53,13 @@ Fmt1={W}42:PreambleCount	3	0
 Fmt2={W}42:Temprature	3	1
 Fmt3={W}42:date	4	0
 Fmt4={W}42:hour	4	0
-Fmt5={W}42:minits	4	0
-Fmt6={W}42:mouth	4	0
-Fmt7={W}42:year	4	0
+Fmt5={W}42:houre1	3	0
+Fmt6={W}42:houre2	3	0
+Fmt7={W}42:minits	4	0
+Fmt8={W}42:minits1	3	0
+Fmt9={W}42:minits2	3	0
+Fmt10={W}42:mouth	4	0
+Fmt11={W}42:year	4	0
 [Trace2]
 Enabled=0
 ShowSource=0
@@ -104,9 +108,6 @@ Count=0
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [Aliases]
 Count=0
 SuppressDialog=0
@@ -120,3 +121,6 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""

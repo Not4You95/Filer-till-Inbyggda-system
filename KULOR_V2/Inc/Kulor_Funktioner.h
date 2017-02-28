@@ -4,15 +4,16 @@ void SendToSerial(uint8_t *text, uint8_t size);
 void ReciveFromUser_clk(char *temp,uint8_t size);
 void assert_failed(uint8_t *file, uint32_t line);
 void RTC_CLOCK_SETINGS(void);
-void RTC_CalendarShow(uint8_t *showtime, uint8_t *showdate);
+void RTC_CalendarShow();
 //void RTC_test(void);
 void RTC_CalendarConfig(void);
 
-void SetDisplayClock(uint8_t number[]);
+void UppDateDisplay(uint8_t number);
 void SetDisplayTemp(uint8_t number[]);
 void SetDisplayNumber();
 void getTempratue();
 void getHumidity();
+
 void BlikDot(void);
 long int ConvertBinToDec(long int num);
 void test(void);
