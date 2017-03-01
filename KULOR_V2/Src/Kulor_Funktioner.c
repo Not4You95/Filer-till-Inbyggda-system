@@ -13,7 +13,7 @@
 #include "math.h"
 
 RTC_HandleTypeDef RtcHandle;
-ITStatus UartReady = RESET;
+ITStatus UartReady = SET;
 TIM_HandleTypeDef htim1;
 RTC_DateTypeDef sdatestructure;
 RTC_TimeTypeDef stimestructure;
@@ -53,7 +53,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle){
 }
 /////
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle){
-  UartReady = SET; // Set the transmiton flag to complete 
+  UartReady = RESET; // Set the transmiton flag to complete 
   
   
 }
@@ -664,17 +664,17 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
       //printf("hej\n");
       BitCount++;
       
-      if((400)<uwIC2Value1 && uwIC2Value1 <(800) && BitCount<6 ){
+      if((400)<uwIC2Value1 && uwIC2Value1 <(800) && BitCount<5 ){
         PreambleCount++;      
         // printf("Preamble: %d\n",PreambleCount);
       }
-      else if(BitCount > PreambleCount && PreambleCount != 5){
+      else if(BitCount > PreambleCount && PreambleCount != 4){
         BitCount=0;
         PreambleCount=0;     
       } 
       
-      if(PreambleCount== 5){
-        RecivedPacket[BitCount-6] = uwIC2Value1;
+      if(PreambleCount== 4){
+        RecivedPacket[BitCount-5] = uwIC2Value1;
         // arrayCount++;
         // printf("Array: %d\n",RecivedPacket[BitCount-10]);
         
@@ -707,7 +707,7 @@ int CalculatePulsWithd(uint32_t puls){
     return 1;
   }
   
-  return 2;
+  return 0;
   
 }
 
@@ -753,7 +753,7 @@ void CalculateTempraturePacket(void){
   
   printf("\nCRC: %d\n",CrcCode);
   
-  if(CrcCode == 0){ // Om CRC värdet är 0 så uppdateras värden 
+  if(CrcCode == 0 && flag == 1){ // Om CRC värdet är 0 så uppdateras värden 
     
     // printf("\n\nTemprature: \n");
     for(int i=14;i<24;i++){ // Sparar de binära värden för tempraturen i en egen Tempratur array
@@ -771,9 +771,12 @@ void CalculateTempraturePacket(void){
     
     getTempratue();   // Räknar ut decimala värdet för Tempratur 
     getHumidity();  // Räknar ut decimala värdet för luftfuktighet 
-    // uint8_t text_Temp[] = "Temprature is: ";
-    //SendToSerial(text_Temp,sizeof(text_Temp));
-    // SendToSerial(TempratureValue,sizeof(TempratureValue));
+     uint8_t text_Temp[] = "Temprature is: ";
+     while(UartReady != SET)
+  {
+  }
+   SendToSerial(text_Temp,sizeof(text_Temp));
+   SendToSerial(TempratureValue,sizeof(TempratureValue));
   }
   
   

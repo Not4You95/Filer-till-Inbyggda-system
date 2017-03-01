@@ -109,9 +109,9 @@ int main(void)
   //////////////////////////////////////////////////////
   
   
- // set_clock_serial();
+  set_clock_serial();
   ///////////////////////////////////////////////////
-  static uint32_t last_second = 0;
+ 
   
   while (1)
   {
