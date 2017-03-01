@@ -28,13 +28,14 @@ char tempInputTime[6];
 uint8_t                PreambleCount=0;
 uint8_t               Temprature[10];
 uint8_t               humidity[7];
-uint32_t               RecivedPacket[40];
+uint32_t               RecivedPacket[350];
 uint16_t                BitCount = 0;
+uint16_t                arrayCount=0;
 uint32_t              uwIC2Value1=0;
 uint8_t                shortPeriod=600,LongPeriod=1500,space=20;
-uint8_t                TempratureValue[5];
+uint8_t                TempratureValue[4];
 uint16_t               BitValue[]= {512,256,128,64,32,16,8,4,2,1};
-uint8_t                HumidityValue[5];
+uint8_t                HumidityValue[3];
 
 uint8_t               CrcCode=10;
 bool                  PreambleFlag=false;
@@ -48,20 +49,17 @@ uint32_t              data_array[40];
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle){
   UartReady = SET; // Set the transmiton flag to complete 
-  //printf("Hello Tx\n");
+  
 }
 /////
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle){
   UartReady = SET; // Set the transmiton flag to complete 
-  //printf("Hello Rx\n");
+  
   
 }
 ////Send text to uset throw uart/////
 void SendToSerial(uint8_t *text, uint8_t size){  
-  
-  
-  
-  
+  /* Denna fuktion sänder man  in en array med värden som man vill sända t*/
   if(HAL_UART_Transmit_IT(&huart3, (uint8_t*)text, size) != HAL_OK){
     Error_Handler();
     
@@ -109,7 +107,7 @@ void RTC_CalendarConfig(void)
   
   
   
-
+  
   
   sdatestructure.Year = (atoi(SetDate[0])-2000);//atoi(SetDate[0]);//0x14;
   sdatestructure.Month = atoi(SetDate[1]);
@@ -123,7 +121,7 @@ void RTC_CalendarConfig(void)
     Error_Handler();
   }
   
- 
+  
   stimestructure.Hours = atoi(SetTime[0]);//atoi(SetTime[0]);//0x02;
   stimestructure.Minutes = atoi(SetTime[1]);//atoi(SetTime[1]);
   stimestructure.Seconds = 0x00;
@@ -297,7 +295,7 @@ void UppDateDisplay(uint8_t number)
   HAL_RTC_GetTime(&RtcHandle, &stimestructureget, RTC_FORMAT_BIN);
   HAL_RTC_GetDate(&RtcHandle, &sdatestructureget, RTC_FORMAT_BIN);
   
- // printf("Time: %2d:%2d:%2d\n", stimestructureget.Hours, stimestructureget.Minutes, stimestructureget.Seconds);
+  // printf("Time: %2d:%2d:%2d\n", stimestructureget.Hours, stimestructureget.Minutes, stimestructureget.Seconds);
   
   uint8_t houre1=1,houre2=2,minits1=3,minits2=4;  
   //HAL_GPIO_WritePin(GPIOC, Kolon_Pin, GPIO_PIN_SET);
@@ -337,7 +335,7 @@ void UppDateDisplay(uint8_t number)
   if(number == 2){
     
     HAL_GPIO_WritePin(GPIOC, DIG3clk_Pin, GPIO_PIN_SET); 
-   // printf("Test: %d\n",(stimestructureget.Minutes/10));
+    // printf("Test: %d\n",(stimestructureget.Minutes/10));
     ShowNumberOnDispaly((stimestructureget.Minutes/10));
     
   }
@@ -403,9 +401,7 @@ void UppDateDisplay(uint8_t number)
 
 
 
-void BlikDot(void){
-  
-}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void RTC_CalendarShow()
 {
@@ -488,9 +484,7 @@ void RTC_CLOCK_SETINGS()
 }
 
 
-void SetDisplayNumber(){
-  
-}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void getTempratue(){
@@ -499,7 +493,7 @@ void getTempratue(){
     
     if(Temprature[i]==1){
       temp += BitValue[i];
-      printf("Loop: %d\n",temp);
+      //printf("Loop: %d\n",temp);
       
     }
     
@@ -514,7 +508,13 @@ void getTempratue(){
   TempratureValue[0] = value1;
   TempratureValue[1] = value2;
   TempratureValue[2] = decimal;
-  printf("Temprature: %d\n",TempratureValue);
+  
+  printf("Temprature: ");
+  for(int i=0;i<3;i++){
+    
+    printf("%d",TempratureValue[i]);
+  }
+  printf("\n\r");
   
   
 }
@@ -525,7 +525,7 @@ void getHumidity(){
     
     if(humidity[i]==1){
       temp += BitValue[i+3];
-      printf("Loop: %d\n",temp);      
+      //  printf("Loop: %d\n",temp);      
     }
     
     
@@ -534,6 +534,12 @@ void getHumidity(){
   value1 = temp/10;
   HumidityValue[0] = value1;
   HumidityValue[1] = value2;
+  printf("Humidity: ");
+  for(int i=0;i<2;i++){
+    
+    printf("%d",HumidityValue[i]);
+  }
+  printf("\n\r");
   //printf("Luft: %d\n", HumidityValue);
   
   
@@ -650,38 +656,40 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
   
   HAL_TIM_IC_Stop_IT(&htim1,TIM_CHANNEL_2);
   if(htim -> Channel == HAL_TIM_ACTIVE_CHANNEL_2){   
-  
-  
-  uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-  if(uwIC2Value1<2000 && uwIC2Value1>500)
-  {
-    //printf("hej\n");
-     BitCount++;
-  
-  if((400)<uwIC2Value1 && uwIC2Value1 <(800) && BitCount<4 ){
-  PreambleCount++;      
-  // printf("Preamble: %d\n",PreambleCount);
-}
-    else if(BitCount > PreambleCount && PreambleCount != 3){
-  BitCount=0;
-  PreambleCount=0;     
-} 
-  
-  if(PreambleCount== 3){
-  RecivedPacket[BitCount-10] = uwIC2Value1;
-  // printf("Array: %d\n",RecivedPacket[BitCount-10]);
-  
-  
-  if(BitCount == 50){
-  CalculateTempraturePacket();
-  BitCount=0;
-  PreambleCount=0;
-} 
-}
-}
-  
-  
-} 
+    
+    
+    uwIC2Value1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+    if(uwIC2Value1<2000 && uwIC2Value1>400)
+    {
+      //printf("hej\n");
+      BitCount++;
+      
+      if((400)<uwIC2Value1 && uwIC2Value1 <(800) && BitCount<6 ){
+        PreambleCount++;      
+        // printf("Preamble: %d\n",PreambleCount);
+      }
+      else if(BitCount > PreambleCount && PreambleCount != 5){
+        BitCount=0;
+        PreambleCount=0;     
+      } 
+      
+      if(PreambleCount== 5){
+        RecivedPacket[BitCount-6] = uwIC2Value1;
+        // arrayCount++;
+        // printf("Array: %d\n",RecivedPacket[BitCount-10]);
+        
+        
+        if(BitCount == 300){
+          CalculateTempraturePacket();
+          BitCount=0;
+          PreambleCount=0;
+          //arrayCount=0;
+        } 
+      }
+    }
+    
+    
+  } 
   
   
   HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_2);
@@ -691,137 +699,84 @@ int CalculatePulsWithd(uint32_t puls){
   
   
   
-  if((LongPeriod-space)< puls && puls <(LongPeriod+space) || puls==0)
+  if((1200)< puls && puls <(1900) || puls==0)
   {
     return 0;
   }
-  else if((shortPeriod-space)<puls && puls <(shortPeriod+space) || puls==1){
+  else if((400)<puls && puls <(800) || puls==1){
     return 1;
   }
   
-  return 0;
+  return 2;
   
 }
 
-long int ConvertBinToDec(long int num)   // Function Definition
-{
-  long int rem,sum=0,power=0;
-  while(num>0)
-  {
-    rem = num%10;
-    num = num/10;
-    sum = sum + rem * pow(2,power);
-    power++;
-  }
-  
-  printf("Decimal number : %d",sum);
-  return sum;
-}
+
 
 void CalculateTempraturePacket(void){
-  uint32_t temp[40];
-  uint8_t test;
-  /////NÄTID/////
-  data_array[0] = 0;
-  data_array[1] = 1;
-  data_array[2] = 0;
-  data_array[3] = 0;
-  data_array[4] = 1;
-  //Kanalnumer
-  data_array[5] = 0;
-  data_array[6] = 0;
-  data_array[7] = 0;
-  //???????
-  data_array[8] = 0;
-  data_array[9] =  1;
-  data_array[10] = 1;
-  data_array[11] = 1;
-  data_array[12] = 0;
-  data_array[13] = 0;
+  static uint32_t temp[350];
+  static uint32_t packet[40];
+  int flag=0;
   
-  //Temprature 
-  data_array[14] = 0;
-  data_array[15] = 0;
-  
-  data_array[16] = 1;
-  data_array[17] = 1;
-  data_array[18] = 0;
-  data_array[19] = 1;
-  data_array[20] = 0;
-  data_array[21] = 1;
-  data_array[22] = 1;
-  data_array[23] = 1;
-  ///
-  data_array[24] = 0;
-  ///Luft
-  data_array[25] = 0;
-  data_array[26] = 1;
-  data_array[27] = 0;
-  data_array[28] = 0;
-  data_array[29] = 0;
-  data_array[30] = 1;
-  data_array[31] = 0;
-  //CRC
-  data_array[32] = 0;
-  data_array[33] = 1;
-  data_array[34] = 0;
-  data_array[35] = 1;
-  data_array[36] = 1;
-  data_array[37] = 1;
-  data_array[38] = 0;
-  data_array[39] = 1;
-  
-  for(int i=0;i<40;i++){
+  for(int i=0;i<300;i++){
     temp[i]=CalculatePulsWithd(RecivedPacket[i]);
     //printf("%d\n", RecivedPacket[i]);
     
   }
-  printf("\n\nTemprature: \n");
-  for(int i=14;i<24;i++){
-    Temprature[i-14]= temp[i];
-    test +=temp[i];
-    printf("%d",Temprature[i-14]);
-    
-  }
   
-  printf("\nLuft: ");
-  for(int a=25;a<32;a++){
-    humidity[a-25]= temp[a];
-    printf("%d",humidity[a-25]);
-  }
-  
-  printf("\nCRC: ");
-  for(int i=32;i<40;i++){   
-    printf("%d",temp[i]);
-  }
-  
-  for(int i=0;i<40;i++){
-    if(temp[i]==data_array[i])
-    {
-    }
-    else{
-      printf("\nBit fel nr: %d\n Temp: %d Data: %d\n\n",i,temp[i],data_array[i]);
+  for(int i=0;i<300;i++){
+    if(temp[i]==0 && temp[i+1]==1 && temp[i+2]==0 && temp[i+3]==0 && temp[i+4]==1 && temp[i+5]==0 && flag != 1  )
+    {   
+     
+      
+      for(int a=i; a<(i+41); a++)
+      {
+        packet[a-i]= temp[a]; 
+        
+       
+      }
+      flag = 1;
+      //printf("Hej!\n");*/
+      
     }
     
   }
+  // printf("Hej2!\n");
   
-  CrcCode = HAL_CRC_Calculate(&hcrc, temp, 40);
+  // Gör om värdena i microsecunder till 1:or och 0:or
+  
+  
+  
+  
+  // Räknar ut CRC koden 
+  CrcCode = 0; ///HAL_CRC_Calculate(&hcrc, packet, 40);
   
   printf("\nCRC: %d\n",CrcCode);
-  getTempratue();
-  getHumidity();
-  /*
-  Temprature[7]=1;
-  for(int i=0;i<sizeof(Temprature);i++){
-  printf("%d",Temprature[i]);
-}
-  test = ((long int) Temprature) ;
-  printf("\nhej: %d \n",test);
-  if(CrcCode == 0){
-  uint8_t temp_text[] = "\n\rTemprature: ";
-  SendToSerial(temp_text,sizeof(temp_text));
-  //printf("hej:%d ",test);
-}*/
+  
+  if(CrcCode == 0){ // Om CRC värdet är 0 så uppdateras värden 
+    
+    // printf("\n\nTemprature: \n");
+    for(int i=14;i<24;i++){ // Sparar de binära värden för tempraturen i en egen Tempratur array
+      Temprature[i-14]= packet[i];
+      
+      // printf("%d",Temprature[i-14]);
+      
+    }
+    
+    // printf("\nLuft: ");
+    for(int a=25;a<31;a++){ // Spara de binära värden för luft fuktighet i en egen array
+      humidity[a-25]= packet[a];
+      // printf("%d",humidity[a-25]);
+    } 
+    
+    getTempratue();   // Räknar ut decimala värdet för Tempratur 
+    getHumidity();  // Räknar ut decimala värdet för luftfuktighet 
+    // uint8_t text_Temp[] = "Temprature is: ";
+    //SendToSerial(text_Temp,sizeof(text_Temp));
+    // SendToSerial(TempratureValue,sizeof(TempratureValue));
+  }
+  
+  
   
   
 }

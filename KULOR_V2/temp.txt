@@ -1,0 +1,57 @@
+ static uint32_t temp[60];
+  static uint32_t packet[40];
+  int count=0;
+  
+  for(int i=0;i<sizeof(RecivedPacket);i++){
+    temp[i]=CalculatePulsWithd(RecivedPacket[i]);
+    //printf("%d\n", RecivedPacket[i]);
+    
+  }
+  
+  for(int i=0;i<sizeof(temp);i++){
+    if(temp[i]==0 && temp[i+1]==1 && temp[i+2]==0 && temp[i+3]==0 && temp[i+4]==1  ){
+      for(int a=i; a< sizeof(temp); a++){
+        packet[a-i]=temp[a];
+        
+      }
+      
+    }
+    
+  }
+  
+  // Gör om värdena i microsecunder till 1:or och 0:or
+  
+ 
+  
+ 
+  // Räknar ut CRC koden 
+  CrcCode = HAL_CRC_Calculate(&hcrc, temp, 40);
+  
+  printf("\nCRC: %d\n",CrcCode);
+  
+  if(CrcCode == 0){ // Om CRC värdet är 0 så uppdateras värden 
+    
+     printf("\n\nTemprature: \n");
+  for(int i=14;i<24;i++){ // Sparar de binära värden för tempraturen i en egen Tempratur array
+    Temprature[i-14]= packet[i];
+   
+    printf("%d",Temprature[i-14]);
+    
+  }
+  
+ // printf("\nLuft: ");
+  for(int a=25;a<31;a++){ // Spara de binära värden för luft fuktighet i en egen array
+    humidity[a-25]= packet[a];
+   // printf("%d",humidity[a-25]);
+  }
+  
+ // printf("\nCRC: ");
+  for(int i=32;i<40;i++){   
+   // printf("%d",temp[i]);
+  }
+     getTempratue(); // Räknar ut decimala värdet för Tempratur 
+     getHumidity();// Räknar ut decimala värdet för luftfuktighet 
+     uint8_t text_Temp[] = "Temprature is: ";
+     //SendToSerial(text_Temp,sizeof(text_Temp));
+    // SendToSerial(TempratureValue,sizeof(TempratureValue));
+  }

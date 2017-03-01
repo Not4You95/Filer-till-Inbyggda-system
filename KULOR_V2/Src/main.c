@@ -109,14 +109,14 @@ int main(void)
   //////////////////////////////////////////////////////
   
   
- //set_clock_serial();
+ // set_clock_serial();
   ///////////////////////////////////////////////////
   static uint32_t last_second = 0;
   
   while (1)
   {
     /* USER CODE BEGIN 3 */
-    
+    // Undaterart varje segment och att den uppadteras
     for(int i=0;i<8;i++){ 
      UppDateDisplay(i);
      HAL_Delay(1);
