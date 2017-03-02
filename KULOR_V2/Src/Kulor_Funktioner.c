@@ -1,7 +1,6 @@
 #include "stdint.h"
 #include "gpio.h"
 #include "stm32f3xx_hal.h"
-#include "stdbool.h"
 #include "usart.h"
 #include "stdlib.h"
 #include "stdio.h"
@@ -10,7 +9,7 @@
 #include "Kulor_Funktioner.h"
 #include "crc.h"
 #include  "main.h"
-#include "math.h"
+
 
 RTC_HandleTypeDef RtcHandle;
 ITStatus UartReady = RESET;
@@ -19,26 +18,25 @@ RTC_DateTypeDef sdatestructure;
 RTC_TimeTypeDef stimestructure;
 //typedef enum { minits,houer,day,year,mouth} sates_clk;
 //sates_clk State, NextState;
-char *SetDate[3];
-char *SetTime[2];
-char NewLine[]="\n\r";
-char tempInputDate[10];
-char tempInputTime[6];
-
+char                   *SetDate[3];
+char                   *SetTime[2];
+char                   NewLine[]="\n\r";
+char                   tempInputDate[10];
+char                   tempInputTime[6];
 uint8_t                PreambleCount=0;
-uint8_t               Temprature[10];
-uint8_t               humidity[7];
+uint8_t                Temprature[10];
+uint8_t                humidity[7];
 uint32_t               RecivedPacket[350];
-uint16_t                BitCount = 0;
-uint16_t                arrayCount=0;
-uint32_t              uwIC2Value1=0;
+uint16_t               BitCount = 0;
+uint16_t               arrayCount=0;
+uint32_t               uwIC2Value1=0;
 uint8_t                shortPeriod=600,LongPeriod=1500,space=20;
 uint8_t                TempratureValue[4];
 uint16_t               BitValue[]= {512,256,128,64,32,16,8,4,2,1};
 uint8_t                HumidityValue[3];
-uint8_t               CrcCode=10;
+uint8_t                CrcCode=10;
 uint32_t               PulsOneLength=0;
-uint32_t              data_array[40];
+uint32_t               data_array[40];
 
 
 ///////////////////////////////////////////////////
@@ -495,44 +493,6 @@ void getHumidity(){
 }
 
 
-/*void SetDisplayTemp(uint8_t number[])
-{
-  // Vilken 7-seg man vill tända 
-  HAL_GPIO_WritePin(GPIOC, Kolon_Pin, GPIO_PIN_SET);
-  if(number[0]!=0){
-    HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_SET);
-    
-    
-  }
-  else{
-    HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_RESET);
-  }
-  if(number[1]!=0){
-    
-    HAL_GPIO_WritePin(GPIOC, DIG2term_Pin, GPIO_PIN_SET);
-    
-  }
-  else{
-    HAL_GPIO_WritePin(GPIOC, DIG2term_Pin, GPIO_PIN_RESET);
-  }
-  if(number[2]!=0){
-    
-    HAL_GPIO_WritePin(GPIOC, DIG3term_Pin, GPIO_PIN_SET);           
-    
-  }
-  else{
-    HAL_GPIO_WritePin(GPIOC, DIG3term_Pin, GPIO_PIN_RESET);
-  }
-  if(number[3]!=0){
-    
-    HAL_GPIO_WritePin(GPIOC, DIG4term_Pin, GPIO_PIN_SET);
-    
-  }
-  else{
-    HAL_GPIO_WritePin(GPIOC, DIG4term_Pin, GPIO_PIN_RESET);
-  }
-  
-}*/ 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void set_clock_serial(void){
   
@@ -614,7 +574,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
         // printf("Array: %d\n",RecivedPacket[BitCount-10]);
         
         
-        if(BitCount == 300){
+        if(BitCount == 100){
           CalculateTempraturePacket();
           BitCount=0;
           PreambleCount=0;
@@ -648,25 +608,23 @@ int CalculatePulsWithd(uint32_t puls){
 
 
 void CalculateTempraturePacket(void){
-  static uint32_t temp[350];
+  static uint32_t temp[150];
   static uint32_t packet[40];
   int flag=0;
   
-  for(int i=0;i<300;i++){
+  for(int i=0;i<100;i++){
     temp[i]=CalculatePulsWithd(RecivedPacket[i]);  
     
   }
   
-  for(int i=0;i<300;i++){
+  for(int i=0;i<100;i++){
     if(temp[i]==0 && temp[i+1]==1 && temp[i+2]==0 && temp[i+3]==0 && temp[i+4]==1 && temp[i+5]==0 && flag != 1  )
     {   
      
       
       for(int a=i; a<(i+41); a++)
       {
-        packet[a-i]= temp[a]; 
-        
-       
+        packet[a-i]= temp[a];       
       }
       flag = 1;
             
@@ -675,9 +633,9 @@ void CalculateTempraturePacket(void){
   }
  
   // Räknar ut CRC koden 
-  CrcCode = 0; ///HAL_CRC_Calculate(&hcrc, packet, 40);
+  CrcCode = HAL_CRC_Calculate(&hcrc, packet, 40);
   
-  //printf("\nCRC: %d\n",CrcCode);
+  printf("\nCRC: %d\n",CrcCode);
   
   if(CrcCode == 0 && flag == 1){ // Om CRC värdet är 0 så uppdateras värden 
     

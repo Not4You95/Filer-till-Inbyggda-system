@@ -13,10 +13,10 @@ CStepIntDis=_ 0
 LeaveTargetRunning=_ 0
 stlinkResetStyle=0
 stlinkResetStrategy=1
-stlinkserialNo=30303031
+stlinkserialNo=67062515
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=-83152791
+Checksum=-357784497
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -119,6 +119,9 @@ Count=0
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
 [Aliases]
 Count=0
 SuppressDialog=0
@@ -132,6 +135,3 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
