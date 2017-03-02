@@ -63,7 +63,7 @@ osThreadId defaultTaskHandle;
 /* Function prototypes -------------------------------------------------------*/
 void StartDefaultTask(void const * argument);
 void DisplayTask(void const * argument);
-void UartTask(void const * argument);
+//void UartTask(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -101,8 +101,8 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(Diplay_Task, DisplayTask, osPriorityNormal, 0, 128);
   osThreadCreate(osThread(Diplay_Task), NULL);
   
-  osThreadDef(Uart_task,UartTask,osPriorityNormal,0,128);
-  osThreadCreate(osThread(Uart_task),NULL);
+  /*osThreadDef(Uart_task,UartTask,osPriorityNormal,0,128);
+  osThreadCreate(osThread(Uart_task),NULL);*/
   
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -132,16 +132,18 @@ void DisplayTask(void const * argument){
      UppDateDisplay(i);
      vTaskDelay(1);
      i++;
-     if(i==4)i=0;
+     
+     if(i==9)
+       i=0;
   
 }
   
 }
 
-void UartTask(void const * argument){
-  set_clock_serial();  
+/*void UartTask(void const * argument){
+  //set_clock_serial();  
   
-}
+}*/
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

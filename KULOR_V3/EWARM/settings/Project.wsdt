@@ -14,7 +14,7 @@
       </Debug-Log>
       <Workspace>
         <ColumnWidths>
-          <Column0>292</Column0>
+          <Column0>108</Column0>
           <Column1>27</Column1>
           <Column2>27</Column2>
           <Column3>27</Column3>
@@ -68,77 +68,17 @@
       <Pane>
         <Tab>
           <Factory>TextEditor</Factory>
-          <Filename>$WS_DIR$\..\Src\main.c</Filename>
+          <Filename>$WS_DIR$\..\Src\Kulor_Funktioner.c</Filename>
           <XPos>0</XPos>
           <YPos>0</YPos>
           <SelStart>0</SelStart>
           <SelEnd>0</SelEnd>
           <XPos2>0</XPos2>
-          <YPos2>38</YPos2>
-          <SelStart2>1487</SelStart2>
-          <SelEnd2>1487</SelEnd2>
+          <YPos2>550</YPos2>
+          <SelStart2>17707</SelStart2>
+          <SelEnd2>17707</SelEnd2>
         </Tab>
-        <Tab>
-          <Factory>TextEditor</Factory>
-          <Filename>$WS_DIR$\..\..\KULOR_V2\Src\Kulor_Funktioner.c</Filename>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
-          <SelStart>0</SelStart>
-          <SelEnd>0</SelEnd>
-          <XPos2>0</XPos2>
-          <YPos2>497</YPos2>
-          <SelStart2>16292</SelStart2>
-          <SelEnd2>16292</SelEnd2>
-        </Tab>
-        <Tab>
-          <Factory>TextEditor</Factory>
-          <Filename>$WS_DIR$\..\Src\freertos.c</Filename>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
-          <SelStart>0</SelStart>
-          <SelEnd>0</SelEnd>
-          <XPos2>0</XPos2>
-          <YPos2>114</YPos2>
-          <SelStart2>4911</SelStart2>
-          <SelEnd2>4911</SelEnd2>
-        </Tab>
-        <ActiveTab>2</ActiveTab>
-        <Tab>
-          <Factory>TextEditor</Factory>
-          <Filename>$WS_DIR$\..\Inc\Kulor_Funktioner.h</Filename>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
-          <SelStart>0</SelStart>
-          <SelEnd>0</SelEnd>
-          <XPos2>0</XPos2>
-          <YPos2>0</YPos2>
-          <SelStart2>618</SelStart2>
-          <SelEnd2>618</SelEnd2>
-        </Tab>
-        <Tab>
-          <Factory>TextEditor</Factory>
-          <Filename>$WS_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM4F\port.c</Filename>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
-          <SelStart>0</SelStart>
-          <SelEnd>0</SelEnd>
-          <XPos2>0</XPos2>
-          <YPos2>251</YPos2>
-          <SelStart2>11067</SelStart2>
-          <SelEnd2>11086</SelEnd2>
-        </Tab>
-        <Tab>
-          <Factory>TextEditor</Factory>
-          <Filename>$WS_DIR$\..\Src\rtc.c</Filename>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
-          <SelStart>0</SelStart>
-          <SelEnd>0</SelEnd>
-          <XPos2>0</XPos2>
-          <YPos2>39</YPos2>
-          <SelStart2>0</SelStart2>
-          <SelEnd2>0</SelEnd2>
-        </Tab>
+        <ActiveTab>0</ActiveTab>
       </Pane>
       <ActivePane>0</ActivePane>
       <Sizes>
@@ -169,16 +109,16 @@
               <Rect>
                 <Top>-2</Top>
                 <Left>-2</Left>
-                <Bottom>538</Bottom>
-                <Right>366</Right>
+                <Bottom>540</Bottom>
+                <Right>182</Right>
                 <x>-2</x>
                 <y>-2</y>
-                <xscreen>183</xscreen>
-                <yscreen>200</yscreen>
-                <sizeHorzCX>119141</sizeHorzCX>
-                <sizeHorzCY>256082</sizeHorzCY>
-                <sizeVertCX>239583</sizeVertCX>
-                <sizeVertCY>691421</sizeVertCY>
+                <xscreen>91</xscreen>
+                <yscreen>198</yscreen>
+                <sizeHorzCX>59245</sizeHorzCX>
+                <sizeHorzCY>253521</sizeHorzCY>
+                <sizeVertCX>119792</sizeVertCX>
+                <sizeVertCY>693982</sizeVertCY>
               </Rect>
             </Wnd0>
           </Sizes>
@@ -196,16 +136,16 @@
               <Rect>
                 <Top>-2</Top>
                 <Left>-2</Left>
-                <Bottom>198</Bottom>
+                <Bottom>196</Bottom>
                 <Right>1538</Right>
                 <x>-2</x>
                 <y>-2</y>
                 <xscreen>1540</xscreen>
-                <yscreen>200</yscreen>
+                <yscreen>198</yscreen>
                 <sizeHorzCX>1002604</sizeHorzCX>
-                <sizeHorzCY>256082</sizeHorzCY>
-                <sizeVertCX>119141</sizeVertCX>
-                <sizeVertCY>256082</sizeVertCY>
+                <sizeHorzCY>253521</sizeHorzCY>
+                <sizeVertCX>59245</sizeVertCX>
+                <sizeVertCY>253521</sizeVertCY>
               </Rect>
             </Wnd1>
           </Sizes>

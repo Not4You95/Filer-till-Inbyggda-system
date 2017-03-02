@@ -35,7 +35,7 @@
 #include "stm32f3xx.h"
 #include "stm32f3xx_it.h"
 #include "cmsis_os.h"
-
+#include "usart.h"
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -96,6 +96,10 @@ void TIM2_IRQHandler(void)
   /* USER CODE BEGIN TIM2_IRQn 1 */
 
   /* USER CODE END TIM2_IRQn 1 */
+}
+void USART3_IRQHandler(void){
+  HAL_UART_IRQHandler(&huart3);
+  
 }
 
 /* USER CODE BEGIN 1 */

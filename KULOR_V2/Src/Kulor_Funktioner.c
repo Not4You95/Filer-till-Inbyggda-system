@@ -51,8 +51,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle){
   
   
 }
-
-
 ////Send text to uset throw uart/////
 void SendToSerial(uint8_t *text, uint8_t size){  
   /* Denna fuktion sänder man  in en array med värden som man vill sända t*/
@@ -62,7 +60,8 @@ void SendToSerial(uint8_t *text, uint8_t size){
   
 }
 ///Recive info from user throw uart///////
-void ReciveFromUser_clk(char *temp,uint8_t size){
+void ReciveFromUser_clk(char *temp,uint8_t size)
+{
    
   
   if(HAL_UART_Receive_IT(&huart3, (uint8_t*)temp, size) != HAL_OK){
@@ -79,9 +78,6 @@ void ReciveFromUser_clk(char *temp,uint8_t size){
   
 }
 /////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void RTC_CalendarConfig(void)
 {
   
@@ -128,6 +124,7 @@ void RTC_CalendarConfig(void)
   HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_2);
   
 }
+/////////////////////////////////////////////////
 void ShowNumberOnDispaly(uint8_t number)
 {
   
@@ -261,7 +258,7 @@ void ShowNumberOnDispaly(uint8_t number)
   
   
 }
-
+//////////////////////////////////////
 void UppDateDisplay(uint8_t number)
 {
   static uint32_t last_second = 0;
@@ -289,7 +286,7 @@ void UppDateDisplay(uint8_t number)
     HAL_GPIO_WritePin(GPIOC, DIG1clk_Pin, GPIO_PIN_SET);
     
    
-    ShowNumberOnDispaly((stimestructureget.Hours/10 ));
+    //ShowNumberOnDispaly((stimestructureget.Hours/10 ));
     
     
   }
@@ -301,7 +298,7 @@ void UppDateDisplay(uint8_t number)
     
     HAL_GPIO_WritePin(GPIOC, DIG2clk_Pin, GPIO_PIN_SET);    
     
-    ShowNumberOnDispaly((stimestructureget.Hours%10));
+    //ShowNumberOnDispaly((stimestructureget.Hours%10));
     
   }
   else{
@@ -312,7 +309,7 @@ void UppDateDisplay(uint8_t number)
     
     HAL_GPIO_WritePin(GPIOC, DIG3clk_Pin, GPIO_PIN_SET); 
     // printf("Test: %d\n",(stimestructureget.Minutes/10));
-    ShowNumberOnDispaly((stimestructureget.Minutes/10));
+    //ShowNumberOnDispaly((stimestructureget.Minutes/10));
     
   }
   else{
@@ -322,7 +319,7 @@ void UppDateDisplay(uint8_t number)
     
     HAL_GPIO_WritePin(GPIOC, DIG4clk_Pin, GPIO_PIN_SET);
     
-    ShowNumberOnDispaly((stimestructureget.Minutes%10));
+   // ShowNumberOnDispaly((stimestructureget.Minutes%10));
     
   }
   else{
@@ -331,12 +328,12 @@ void UppDateDisplay(uint8_t number)
   
   if(number == 4){
     HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_SET);
-    if(TempratureValue[5]==1){
+   /* if(TempratureValue[5]==1){
       ShowNumberOnDispaly(10);
     }
     else{
       ShowNumberOnDispaly(11);
-    }
+    }*/
     
   }
   else{
@@ -346,7 +343,7 @@ void UppDateDisplay(uint8_t number)
   
   if(number ==5 ){
     HAL_GPIO_WritePin(GPIOC, DIG2term_Pin, GPIO_PIN_SET);
-    ShowNumberOnDispaly(TempratureValue[0]);
+   // ShowNumberOnDispaly(TempratureValue[0]);
     
   }
   else{
@@ -356,7 +353,7 @@ void UppDateDisplay(uint8_t number)
   
   if(number == 6){
     HAL_GPIO_WritePin(GPIOC, DIG3term_Pin, GPIO_PIN_SET);
-    ShowNumberOnDispaly(TempratureValue[1]);
+   // ShowNumberOnDispaly(TempratureValue[1]);
     HAL_GPIO_WritePin(GPIOD, DP_led_Pin, GPIO_PIN_RESET);
     
   }
@@ -366,14 +363,13 @@ void UppDateDisplay(uint8_t number)
   
   if(number == 7){
     HAL_GPIO_WritePin(GPIOC, DIG4term_Pin, GPIO_PIN_SET);
-    ShowNumberOnDispaly(TempratureValue[2]);
+   // ShowNumberOnDispaly(TempratureValue[2]);
   }
   else{
     HAL_GPIO_WritePin(GPIOC, DIG4term_Pin, GPIO_PIN_RESET);
   }
   
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void RTC_CalendarShow()
@@ -444,9 +440,7 @@ void RTC_CLOCK_SETINGS()
   
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void getTempratue(){
   uint8_t temp=0,value1,value2,valueTemp,decimal;
   for(int i=0;i<sizeof(Temprature);i++){
@@ -469,7 +463,7 @@ void getTempratue(){
   TempratureValue[2] = decimal;
  
 }
-
+/////////////////////////////////////////////////////////
 void getHumidity(){
   int temp=0,value1,value2;
   for(int i=0;i<sizeof(humidity);i++){
@@ -492,7 +486,6 @@ void getHumidity(){
   
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void set_clock_serial(void){
   
@@ -502,8 +495,7 @@ void set_clock_serial(void){
   
   // set the time RTC throw uart
       
-      uint8_t text[]= "\n Input Date yyyy-mm-dd:\n\r";
-      // printf("I:%d\n",i);
+      uint8_t text[]= "\n Input Date yyyy-mm-dd:\n\r";     
       SendToSerial(text,sizeof(text));
       ReciveFromUser_clk(tempInputDate,10);
       SendToSerial(tempInputDate,sizeof(tempInputDate));
@@ -589,24 +581,24 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
   
   HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_2);
 }
-
+////////////////////////////////////////////////////////////////
 int CalculatePulsWithd(uint32_t puls){
   
   
   
-  if((1200)< puls && puls <(1900) || puls==0)
+  if((1200)< puls && puls <(1900))
   {
     return 0;
   }
-  else if((400)<puls && puls <(800) || puls==1){
+  else if((400)<puls && puls <(1000)){
     return 1;
   }
   
-  return 0;
+  return -1;
   
 }
 
-
+///////////////////////////////////////////////////////////
 void CalculateTempraturePacket(void){
   static uint32_t temp[150];
   static uint32_t packet[40];

@@ -13,10 +13,10 @@ CStepIntDis=_ 0
 LeaveTargetRunning=_ 0
 stlinkResetStyle=0
 stlinkResetStrategy=1
-stlinkserialNo=67062515
+stlinkserialNo=50540687
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=-357784497
+Checksum=-132939599
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0

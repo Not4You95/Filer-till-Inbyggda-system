@@ -32,7 +32,7 @@ uint32_t               RecivedPacket[350];
 uint16_t                BitCount = 0;
 uint16_t                arrayCount=0;
 uint32_t              uwIC2Value1=0;
-uint8_t                shortPeriod=600,LongPeriod=1500,space=20;
+uint16_t                shortPeriod=600,LongPeriod=1500,space=20;
 uint8_t                TempratureValue[4];
 uint16_t               BitValue[]= {512,256,128,64,32,16,8,4,2,1};
 uint8_t                HumidityValue[3];
@@ -80,9 +80,6 @@ void ReciveFromUser_clk(char *temp,uint8_t size){
   
   
 }
-/////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void RTC_CalendarConfig(void)
 {
@@ -471,7 +468,7 @@ void getTempratue(){
   TempratureValue[2] = decimal;
  
 }
-
+/////////////////////////////////////////////////
 void getHumidity(){
   int temp=0,value1,value2;
   for(int i=0;i<sizeof(humidity);i++){
@@ -493,8 +490,6 @@ void getHumidity(){
   
   
 }
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void set_clock_serial(void){
   
@@ -561,7 +556,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
       //printf("hej\n");
       BitCount++;
       
-      if((400)<uwIC2Value1 && uwIC2Value1 <(800) && BitCount<5 ){
+      if((400)<uwIC2Value1 && uwIC2Value1 <(1000) && BitCount<5 ){
         PreambleCount++;      
         // printf("Preamble: %d\n",PreambleCount);
       }
@@ -591,7 +586,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
   
   HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_2);
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////
 int CalculatePulsWithd(uint32_t puls){
   
   
@@ -600,15 +595,14 @@ int CalculatePulsWithd(uint32_t puls){
   {
     return 0;
   }
-  else if((400)<puls && puls <(800) || puls==1){
+  else if((400)<puls && puls <(1000) || puls==1){
     return 1;
   }
   
-  return 0;
+  return -1;
   
 }
-
-
+/////////////////////////////////////////////////////////
 void CalculateTempraturePacket(void){
   static uint32_t temp[150];
   static uint32_t packet[40];

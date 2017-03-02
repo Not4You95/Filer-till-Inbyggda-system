@@ -21,6 +21,8 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "stm32f3_discovery.h"
+#include "Kulor_Funktioner.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -68,9 +70,9 @@ int main(void)
   MX_RTC_Init();
   MX_TIM1_Init();
   MX_USART3_UART_Init();
-
+  RTC_CLOCK_SETINGS();
   /* USER CODE BEGIN 2 */
-
+    set_clock_serial();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

@@ -96,7 +96,7 @@ int main(void)
  
   
   
-  set_clock_serial();
+  //set_clock_serial();
   ///////////////////////////////////////////////////
  
   
@@ -104,12 +104,14 @@ int main(void)
   {
     /* USER CODE BEGIN 3 */
     // Undaterart varje segment och att den uppadteras
-   
-   
-    for(int i=0;i<8;i++){ 
-     UppDateDisplay(i);
-     HAL_Delay(1);
-     
+    for(int i=0;i<8;i++){
+      UppDateDisplay(i);
+      HAL_Delay(500);
+      for(int a=0;a<12;a++){
+        ShowNumberOnDispaly(a);
+        HAL_Delay(500);
+      }
+      
     }
     //RTC_CalendarShow();
     /* USER CODE END 3 */
