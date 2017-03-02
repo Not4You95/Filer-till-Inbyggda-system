@@ -78,7 +78,19 @@
           <SelStart2>17707</SelStart2>
           <SelEnd2>17707</SelEnd2>
         </Tab>
-        <ActiveTab>0</ActiveTab>
+        <Tab>
+          <Factory>TextEditor</Factory>
+          <Filename>$WS_DIR$\..\Src\main.c</Filename>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+          <SelStart>0</SelStart>
+          <SelEnd>0</SelEnd>
+          <XPos2>0</XPos2>
+          <YPos2>40</YPos2>
+          <SelStart2>1550</SelStart2>
+          <SelEnd2>1550</SelEnd2>
+        </Tab>
+        <ActiveTab>1</ActiveTab>
       </Pane>
       <ActivePane>0</ActivePane>
       <Sizes>
