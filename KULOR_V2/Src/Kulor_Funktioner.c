@@ -13,7 +13,7 @@
 #include "math.h"
 
 RTC_HandleTypeDef RtcHandle;
-ITStatus UartReady = SET;
+ITStatus UartReady = RESET;
 TIM_HandleTypeDef htim1;
 RTC_DateTypeDef sdatestructure;
 RTC_TimeTypeDef stimestructure;
@@ -36,12 +36,8 @@ uint8_t                shortPeriod=600,LongPeriod=1500,space=20;
 uint8_t                TempratureValue[4];
 uint16_t               BitValue[]= {512,256,128,64,32,16,8,4,2,1};
 uint8_t                HumidityValue[3];
-
 uint8_t               CrcCode=10;
-bool                  PreambleFlag=false;
 uint32_t               PulsOneLength=0;
-
-//////////////////////////////////////////////////
 uint32_t              data_array[40];
 
 
@@ -53,28 +49,23 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle){
 }
 /////
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle){
-  UartReady = RESET; // Set the transmiton flag to complete 
+  UartReady = SET; // Set the transmiton flag to complete 
   
   
 }
+
+
 ////Send text to uset throw uart/////
 void SendToSerial(uint8_t *text, uint8_t size){  
   /* Denna fuktion sänder man  in en array med värden som man vill sända t*/
-  if(HAL_UART_Transmit_IT(&huart3, (uint8_t*)text, size) != HAL_OK){
-    Error_Handler();
+ 
+  HAL_UART_Transmit(&huart3, (uint8_t*)text, size,5000);
     
-  }
-  while(UartReady != SET)
-  {
-  }
-  UartReady = RESET;
   
 }
 ///Recive info from user throw uart///////
 void ReciveFromUser_clk(char *temp,uint8_t size){
-  
-  
-  //printf("Recive Hello  %d  %d!!!\n",sizeof(temp),size);
+   
   
   if(HAL_UART_Receive_IT(&huart3, (uint8_t*)temp, size) != HAL_OK){
     Error_Handler();      
@@ -86,29 +77,17 @@ void ReciveFromUser_clk(char *temp,uint8_t size){
   
   
   
-  //printf("Input: %s %d\n",temp,sizeof(temp));
+  
   
 }
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void assert_failed(uint8_t *file, uint32_t line){
-  /* User can add his own implementation to report the file name and line number,
-  ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  
-  /* Infinite loop */
-  while (1)
-  {
-  }
-}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void RTC_CalendarConfig(void)
 {
   
-  
-  
-  
-  
-  
+  // Sätter RTC klockan 
   sdatestructure.Year = (atoi(SetDate[0])-2000);//atoi(SetDate[0]);//0x14;
   sdatestructure.Month = atoi(SetDate[1]);
   sdatestructure.Date = atoi(SetDate[2]);//atoi(SetDate[2]);//0x18;
@@ -138,24 +117,24 @@ void RTC_CalendarConfig(void)
   /*##-3- Writes a data in a RTC Backup data Register1 #######################*/
   HAL_RTCEx_BKUPWrite(&RtcHandle, RTC_BKP_DR1, 0x32F2);
   
-  if(sdatestructure.Date == atoi(SetDate[2]) && sdatestructure.Year == atoi(SetDate[0])){
-    uint8_t text_ok[] ="The clock is now set!!";
-    SendToSerial(text_ok,sizeof(text_ok));  
+  if(stimestructure.Hours == atoi(SetTime[0]) && stimestructure.Minutes == atoi(SetTime[1])){
+    uint8_t text_ok[] ="The clock is now set!!\n\r";
+    SendToSerial(text_ok,sizeof(text_ok));
+    
   }
   else{
-    uint8_t text_fail[] = "Can nor set the clock!!";
+    uint8_t text_fail[] = "Can not set the clock!!\n\r";
     SendToSerial(text_fail,sizeof(text_fail)); 
   }
+  HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_1);
+  HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_2);
   
 }
-void ShowNumberOnDispaly(uint8_t number){
-  /* RTC_TimeTypeDef stimestructureget;
-  HAL_RTC_GetTime(&RtcHandle, &stimestructureget, RTC_FORMAT_BIN);
-  uint8_t houer = stimestructureget.Hours;
-  uint8_t minits = stimestructureget.Minutes;
-  printf("Time: %d:%d\n",houer,minits);*/
+void ShowNumberOnDispaly(uint8_t number)
+{
   
   
+  //vilken sifra som ska visas
   
   switch(number){
     
@@ -295,11 +274,10 @@ void UppDateDisplay(uint8_t number)
   HAL_RTC_GetTime(&RtcHandle, &stimestructureget, RTC_FORMAT_BIN);
   HAL_RTC_GetDate(&RtcHandle, &sdatestructureget, RTC_FORMAT_BIN);
   
-  // printf("Time: %2d:%2d:%2d\n", stimestructureget.Hours, stimestructureget.Minutes, stimestructureget.Seconds);
   
   uint8_t houre1=1,houre2=2,minits1=3,minits2=4;  
-  //HAL_GPIO_WritePin(GPIOC, Kolon_Pin, GPIO_PIN_SET);
   
+  // Använder GetTick för att få reda på när en sekud har gåt
   uint32_t current_second = HAL_GetTick();
   if ((current_second - last_second)/2 > 500)
   {    
@@ -308,11 +286,11 @@ void UppDateDisplay(uint8_t number)
     
   }
   
-  
+  // Vilken 7-seg man vill tända 
   if(number == 0){
     HAL_GPIO_WritePin(GPIOC, DIG1clk_Pin, GPIO_PIN_SET);
     
-    //printf("Test: %d\n",(stimestructureget.Hours/10 ));
+   
     ShowNumberOnDispaly((stimestructureget.Hours/10 ));
     
     
@@ -399,9 +377,6 @@ void UppDateDisplay(uint8_t number)
 }
 
 
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void RTC_CalendarShow()
 {
@@ -422,20 +397,8 @@ void RTC_CalendarShow()
 void RTC_CLOCK_SETINGS()
 {
   
-  BSP_LED_Init(LED6);// green
-  BSP_LED_Init(LED4);// Blue
-  BSP_LED_Init(LED3);// Red
-  BSP_LED_Init(LED5);// Orage 
-  ////////////////////////////////////////////////////
-  /*##-1- Configure the RTC peripheral #######################################*/
-  /* Configure RTC prescaler and RTC data registers */
-  /* RTC configured as follows:
-  - Hour Format    = Format 24
-  - Asynch Prediv  = Value according to source clock
-  - Synch Prediv   = Value according to source clock
-  - OutPut         = Output Disable
-  - OutPutPolarity = High Polarity
-  - OutPutType     = Open Drain */ 
+ 
+  
   RtcHandle.Instance = RTC; 
   RtcHandle.Init.HourFormat = RTC_HOURFORMAT_24;
   RtcHandle.Init.AsynchPrediv = RTC_ASYNCH_PREDIV;
@@ -484,70 +447,57 @@ void RTC_CLOCK_SETINGS()
 }
 
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void getTempratue(){
   uint8_t temp=0,value1,value2,valueTemp,decimal;
   for(int i=0;i<sizeof(Temprature);i++){
     
-    if(Temprature[i]==1){
-      temp += BitValue[i];
-      //printf("Loop: %d\n",temp);
+    if(Temprature[i]==1){// Kollar om det finns en 1 i så fall aderas bit positionens värde
+      temp += BitValue[i];     
       
-    }
-    
+    }   
     
   }
+  // Sparar värdena 
   decimal = temp%10;
   valueTemp = temp/10;
   value2 = valueTemp%10;
   value1 = valueTemp/10;
   
   
-  TempratureValue[0] = value1;
+  TempratureValue[0] = value1; 
   TempratureValue[1] = value2;
   TempratureValue[2] = decimal;
-  
-  printf("Temprature: ");
-  for(int i=0;i<3;i++){
-    
-    printf("%d",TempratureValue[i]);
-  }
-  printf("\n\r");
-  
-  
+ 
 }
 
 void getHumidity(){
   int temp=0,value1,value2;
   for(int i=0;i<sizeof(humidity);i++){
     
-    if(humidity[i]==1){
+    if(humidity[i]==1){// Kollar om det finns en 1 i så fall aderas bit positionens värde
       temp += BitValue[i+3];
-      //  printf("Loop: %d\n",temp);      
+           
     }
     
     
   } 
+  // Sparar värden i en array
   value2 = temp%10;
   value1 = temp/10;
   HumidityValue[0] = value1;
   HumidityValue[1] = value2;
-  printf("Humidity: ");
-  for(int i=0;i<2;i++){
-    
-    printf("%d",HumidityValue[i]);
-  }
-  printf("\n\r");
-  //printf("Luft: %d\n", HumidityValue);
+ 
+  
   
   
 }
 
 
-void SetDisplayTemp(uint8_t number[])
+/*void SetDisplayTemp(uint8_t number[])
 {
+  // Vilken 7-seg man vill tända 
   HAL_GPIO_WritePin(GPIOC, Kolon_Pin, GPIO_PIN_SET);
   if(number[0]!=0){
     HAL_GPIO_WritePin(GPIOC, DIG1term_Pin, GPIO_PIN_SET);
@@ -582,7 +532,7 @@ void SetDisplayTemp(uint8_t number[])
     HAL_GPIO_WritePin(GPIOC, DIG4term_Pin, GPIO_PIN_RESET);
   }
   
-}
+}*/ 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void set_clock_serial(void){
   
@@ -590,11 +540,7 @@ void set_clock_serial(void){
   
   int DateCount=0,TimeCount=0;
   
-  for(int i=0;i<2;i++){
-    
-    switch(i){
-      
-    case 0:// set the time RTC throw uart
+  // set the time RTC throw uart
       
       uint8_t text[]= "\n Input Date yyyy-mm-dd:\n\r";
       // printf("I:%d\n",i);
@@ -602,51 +548,40 @@ void set_clock_serial(void){
       ReciveFromUser_clk(tempInputDate,10);
       SendToSerial(tempInputDate,sizeof(tempInputDate));
       SendToSerial(NewLine,sizeof(NewLine));
+      
       /* get the first token */
       token = strtok(tempInputDate, "-");
-      // printf("%s\n",token);
-      
+      // Delar upp den inkomande Datum till år,månad,dag
       while( token != NULL ) 
       {     
         SetDate[DateCount] = token;      
         DateCount++;    
-        token = strtok(NULL, "-");    
+        token = strtok(NULL, "-");   
         
       }
-      // printf("test: %s",SetDate);
+    
       
-      break;
-      
-      
-    case 1:// set the time RTC throw uart
-      uint8_t text_h[]= "\n Input Time hh:mm:\n\r";
-      //  printf("I:%d\n",i);
+    // set the time RTC throw uart
+      uint8_t text_h[]= "\n Input Time hh:mm:\n\r";      
       SendToSerial(text_h,sizeof(text_h));      
       ReciveFromUser_clk(tempInputTime,5);
       SendToSerial(tempInputTime,sizeof(tempInputTime));
       SendToSerial(NewLine,sizeof(NewLine));
+      
+      // Dellar upp det inkomande tiden till enskilda variabler
       token = strtok(tempInputTime, ":");
       while( token != NULL ) 
       {     
-        SetTime[TimeCount] = token; 
-        //printf("%s\n",SetTime[TimeCount]);
+        SetTime[TimeCount] = token;        
         TimeCount++;    
-        token = strtok(NULL, ":");  
-        
+        token = strtok(NULL, ":");        
         
       }
-      
-      break;  
-      
-    default: break;
     
-    }
     
-  }
   
   
-  
-  RTC_CalendarConfig(); 
+  RTC_CalendarConfig(); // Kallar på funktionen för att sätta den nya klockan
   
   
   
@@ -712,15 +647,13 @@ int CalculatePulsWithd(uint32_t puls){
 }
 
 
-
 void CalculateTempraturePacket(void){
   static uint32_t temp[350];
   static uint32_t packet[40];
   int flag=0;
   
   for(int i=0;i<300;i++){
-    temp[i]=CalculatePulsWithd(RecivedPacket[i]);
-    //printf("%d\n", RecivedPacket[i]);
+    temp[i]=CalculatePulsWithd(RecivedPacket[i]);  
     
   }
   
@@ -736,51 +669,42 @@ void CalculateTempraturePacket(void){
        
       }
       flag = 1;
-      //printf("Hej!\n");*/
-      
+            
     }
     
   }
-  // printf("Hej2!\n");
-  
-  // Gör om värdena i microsecunder till 1:or och 0:or
-  
-  
-  
-  
+ 
   // Räknar ut CRC koden 
   CrcCode = 0; ///HAL_CRC_Calculate(&hcrc, packet, 40);
   
-  printf("\nCRC: %d\n",CrcCode);
+  //printf("\nCRC: %d\n",CrcCode);
   
   if(CrcCode == 0 && flag == 1){ // Om CRC värdet är 0 så uppdateras värden 
     
-    // printf("\n\nTemprature: \n");
+    
     for(int i=14;i<24;i++){ // Sparar de binära värden för tempraturen i en egen Tempratur array
       Temprature[i-14]= packet[i];
-      
-      // printf("%d",Temprature[i-14]);
-      
+     
     }
     
-    // printf("\nLuft: ");
     for(int a=25;a<31;a++){ // Spara de binära värden för luft fuktighet i en egen array
-      humidity[a-25]= packet[a];
-      // printf("%d",humidity[a-25]);
+      humidity[a-25]= packet[a];     
     } 
     
     getTempratue();   // Räknar ut decimala värdet för Tempratur 
     getHumidity();  // Räknar ut decimala värdet för luftfuktighet 
-     uint8_t text_Temp[] = "Temprature is: ";
-     while(UartReady != SET)
-  {
-  }
-   SendToSerial(text_Temp,sizeof(text_Temp));
-   SendToSerial(TempratureValue,sizeof(TempratureValue));
+    
+    
+    uint8_t text_Temp[] = "\n\rTemprature is: ";
+    SendToSerial(text_Temp,sizeof(text_Temp));
+    char Temp[]={TempratureValue[0]+48,TempratureValue[1]+48,44,TempratureValue[2]+48};// Sparar Temprature värdet och addrar en komma 
+   
+    SendToSerial(Temp,sizeof(Temp)); // Skickar värdet till Uart
+    
+    
   }
   
   
   
   
 }
-

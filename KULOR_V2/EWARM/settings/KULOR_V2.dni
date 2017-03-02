@@ -13,10 +13,10 @@ CStepIntDis=_ 0
 LeaveTargetRunning=_ 0
 stlinkResetStyle=0
 stlinkResetStrategy=1
-stlinkserialNo=67062515
+stlinkserialNo=30303031
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=479294621
+Checksum=-83152791
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -43,12 +43,18 @@ ITMportsEnable=0
 ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
+[struct_types]
+Fmt0=RTC_DateTypeDef-Date	3	0
+Fmt1=RTC_DateTypeDef-Month	3	0
+Fmt2=RTC_DateTypeDef-WeekDay	3	0
+Fmt3=RTC_DateTypeDef-Year	3	0
 [array_types]
-Fmt0=uint8_t[10]	3	0
-Fmt1=uint8_t[3]	3	0
-Fmt2=uint8_t[4]	3	0
-Fmt3=uint8_t[5]	3	0
-Fmt4=uint8_t[7]	3	0
+Fmt0=char *[3]	3	0
+Fmt1=uint8_t[10]	3	0
+Fmt2=uint8_t[3]	3	0
+Fmt3=uint8_t[4]	3	0
+Fmt4=uint8_t[5]	3	0
+Fmt5=uint8_t[7]	3	0
 [watch_formats]
 Fmt0={W}42:BitCount	3	0
 Fmt1={W}42:CrcCode	3	0
@@ -113,9 +119,6 @@ Count=0
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [Aliases]
 Count=0
 SuppressDialog=0
@@ -129,3 +132,6 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""

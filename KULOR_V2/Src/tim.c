@@ -106,8 +106,7 @@ void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_1);
-  HAL_TIM_IC_Start_IT(&htim1,TIM_CHANNEL_2);
+  
 }
 
 void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)

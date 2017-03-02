@@ -85,28 +85,15 @@ int main(void)
   SystemClock_Config();
   
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_CRC_Init();
-  MX_RTC_Init();
-  MX_TIM1_Init();
+  MX_GPIO_Init();  
+  MX_RTC_Init();  
   MX_USART3_UART_Init();
   RTC_CLOCK_SETINGS();
-  
-  /* USER CODE BEGIN 2 */
-  
-  /* USER CODE END 2 */
-  
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  /////////////////////////////////////////////////
+  MX_TIM1_Init();
+  MX_CRC_Init();
   
   
-  
-  
-  //////////////////////////////////////////////////////
-
-  
-  //////////////////////////////////////////////////////
+ 
   
   
   set_clock_serial();
@@ -117,6 +104,8 @@ int main(void)
   {
     /* USER CODE BEGIN 3 */
     // Undaterart varje segment och att den uppadteras
+   
+   
     for(int i=0;i<8;i++){ 
      UppDateDisplay(i);
      HAL_Delay(1);
