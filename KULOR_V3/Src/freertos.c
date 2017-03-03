@@ -57,13 +57,13 @@
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN Variables */
-
+static uint32_t last_second = 0;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
 void StartDefaultTask(void const * argument);
+void KolonBlinkTask(void const * argument);
 void DisplayTask(void const * argument);
-//void UartTask(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -101,8 +101,8 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(Diplay_Task, DisplayTask, osPriorityNormal, 0, 128);
   osThreadCreate(osThread(Diplay_Task), NULL);
   
-  /*osThreadDef(Uart_task,UartTask,osPriorityNormal,0,128);
-  osThreadCreate(osThread(Uart_task),NULL);*/
+  osThreadDef(KolonBlink_task,KolonBlinkTask,osPriorityNormal,0,128);
+  osThreadCreate(osThread(KolonBlink_task),NULL);
   
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -140,10 +140,17 @@ void DisplayTask(void const * argument){
   
 }
 
-/*void UartTask(void const * argument){
-  //set_clock_serial();  
+void KolonBlinkTask(void const * argument){
+  while(true){
+   uint32_t current_second = HAL_GetTick();
+  if ((current_second - last_second)/2 > 500)
+  {    
+    last_second = current_second;        
+    HAL_GPIO_TogglePin(GPIOC,Kolon_Pin);    
+  }
+  }
   
-}*/
+}
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

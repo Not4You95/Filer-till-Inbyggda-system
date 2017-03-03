@@ -72,7 +72,7 @@ int main(void)
   MX_USART3_UART_Init();
   RTC_CLOCK_SETINGS();
   /* USER CODE BEGIN 2 */
-    set_clock_serial();
+   set_clock_serial();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

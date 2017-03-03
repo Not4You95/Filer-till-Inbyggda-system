@@ -19,26 +19,26 @@ RTC_DateTypeDef sdatestructure;
 RTC_TimeTypeDef stimestructure;
 //typedef enum { minits,houer,day,year,mouth} sates_clk;
 //sates_clk State, NextState;
-char *SetDate[3];
-char *SetTime[2];
-char NewLine[]="\n\r";
-char tempInputDate[10];
-char tempInputTime[6];
+char                   *SetDate[3];
+char                   *SetTime[2];
+char                   NewLine[]="\n\r";
+char                   tempInputDate[10];
+char                   tempInputTime[6];
 
 uint8_t                PreambleCount=0;
-uint8_t               Temprature[10];
-uint8_t               humidity[7];
+uint8_t                Temprature[10];
+uint8_t                humidity[7];
 uint32_t               RecivedPacket[350];
-uint16_t                BitCount = 0;
-uint16_t                arrayCount=0;
-uint32_t              uwIC2Value1=0;
-uint16_t                shortPeriod=600,LongPeriod=1500,space=20;
+uint16_t               BitCount = 0;
+uint16_t               arrayCount=0;
+uint32_t               uwIC2Value1=0;
+uint16_t               shortPeriod=600,LongPeriod=1500,space=20;
 uint8_t                TempratureValue[4];
 uint16_t               BitValue[]= {512,256,128,64,32,16,8,4,2,1};
 uint8_t                HumidityValue[3];
-uint8_t               CrcCode=10;
+uint8_t                CrcCode=10;
 uint32_t               PulsOneLength=0;
-uint32_t              data_array[40];
+uint32_t               data_array[40];
 
 
 ///////////////////////////////////////////////////
@@ -53,7 +53,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle){
   
   
 }
-
 
 ////Send text to uset throw uart/////
 void SendToSerial(uint8_t *text, uint8_t size){  
@@ -262,8 +261,7 @@ void ShowNumberOnDispaly(uint8_t number)
 }
 
 void UppDateDisplay(uint8_t number)
-{
-  static uint32_t last_second = 0;
+{  
   RTC_DateTypeDef sdatestructureget;
   RTC_TimeTypeDef stimestructureget;
   
@@ -275,13 +273,7 @@ void UppDateDisplay(uint8_t number)
   uint8_t houre1=1,houre2=2,minits1=3,minits2=4;  
   
   // Använder GetTick för att få reda på när en sekud har gåt
-  uint32_t current_second = HAL_GetTick();
-  if ((current_second - last_second)/2 > 500)
-  {    
-    last_second = current_second;        
-    HAL_GPIO_TogglePin(GPIOC,Kolon_Pin);
-    
-  }
+  
   
   // Vilken 7-seg man vill tända 
   if(number == 0){
@@ -631,7 +623,7 @@ void CalculateTempraturePacket(void){
   // Räknar ut CRC koden 
   CrcCode = HAL_CRC_Calculate(&hcrc, packet, 40);
   
-  printf("\nCRC: %d\n",CrcCode);
+  //printf("\nCRC: %d\n",CrcCode);
   
   if(CrcCode == 0 && flag == 1){ // Om CRC värdet är 0 så uppdateras värden 
     
