@@ -98,7 +98,9 @@ int main(void)
   
   //set_clock_serial();
   ///////////////////////////////////////////////////
- 
+  // Testa Uart
+    // Skicka till användaren 
+      
   
   while (1)
   {
@@ -110,7 +112,8 @@ int main(void)
       for(int a=0;a<12;a++){
         ShowNumberOnDispaly(a);
         HAL_Delay(500);
-      }
+      }      
+      
       
     }
     //RTC_CalendarShow();

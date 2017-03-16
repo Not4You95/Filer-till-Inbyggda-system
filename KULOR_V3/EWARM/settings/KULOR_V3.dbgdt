@@ -48,7 +48,7 @@
           
           
           
-        <item>RecivedPacket</item><item>CrcCode</item><item>temp</item><item>uwIC2Value1</item><item>BitCount</item><item></item></expressions>
+        <item>RecivedPacket</item><item>CrcCode</item><item>temp</item><item>uwIC2Value1</item><item>BitCount</item><item/></expressions>
         <col-names>
           
           
